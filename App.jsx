@@ -145,8 +145,8 @@ const TONE_S = {
 // ══════════════════════════════════════════
 function ChartSVG({ priceData, narratives, events, activeN, activeE, onN, onE, xLabels, chartWidth }) {
   const CW = chartWidth;
-  const CH = 470;
-  const PAD = { t: 110, r: 48, b: 88, l: 8 };
+  const CH = 420;
+  const PAD = { t: 100, r: 48, b: 80, l: 8 };
   const plotW = CW - PAD.l - PAD.r;
   const plotH = CH - PAD.t - PAD.b;
 
@@ -169,7 +169,7 @@ function ChartSVG({ priceData, narratives, events, activeN, activeE, onN, onE, x
   const yStep = maxPrice - minPrice > 200 ? 50 : maxPrice - minPrice > 100 ? 20 : 10;
   for (let p = minPrice; p <= maxPrice; p += yStep) yTicks.push(p);
 
-  const eventDotY = PAD.t + plotH + 40;
+  const eventDotY = PAD.t + plotH + 36;
 
   return (
     <svg viewBox={`0 0 ${CW} ${CH}`} style={{ width: "100%", height: "auto", display: "block" }}>
@@ -446,9 +446,9 @@ export default function App() {
       <style>{`*{box-sizing:border-box;margin:0}::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px}`}</style>
 
       {/* Header */}
-      <div style={{ padding: "10px 20px 6px", display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
-        <span style={{ fontSize: "16px", fontWeight: "800", color: "#f8fafc", letterSpacing: "-0.03em" }}>NVDA</span>
-        <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.2)" }}>NVIDIA · 주가 맥락 + 전망</span>
+      <div style={{ padding: "8px 20px 4px", display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+        <span style={{ fontSize: "15px", fontWeight: "800", color: "#f8fafc", letterSpacing: "-0.03em" }}>NVDA</span>
+        <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.2)" }}>NVIDIA · 주가 맥락 탐색</span>
         <div style={{ marginLeft: "auto", display: "flex", gap: "2px", background: "rgba(255,255,255,0.04)", borderRadius: "5px", padding: "2px" }}>
           {[{ key: "1Y", label: "단기(1Y)" }, { key: "5Y", label: "장기(5Y)" }].map((v) => (
             <button key={v.key} onClick={() => switchView(v.key)} style={{ padding: "3px 12px", border: "none", borderRadius: "3px", cursor: "pointer", fontSize: "10px", fontWeight: "600", fontFamily: "'DM Mono',monospace", background: view === v.key ? "rgba(96,165,250,0.2)" : "transparent", color: view === v.key ? "#93c5fd" : "rgba(255,255,255,0.25)", transition: "all 0.2s" }}>{v.label}</button>
@@ -465,22 +465,20 @@ export default function App() {
         <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}>
           {/* Chart */}
           <div style={{ padding: "0 8px", flexShrink: 0 }}>
-            <ChartSVG priceData={priceData} narratives={narratives} events={filteredEvents} activeN={activeN} activeE={activeE} onN={handleNarr} onE={handleEvent} xLabels={xLabels} chartWidth={showPanel ? 660 : 960} />
+            <ChartSVG priceData={priceData} narratives={narratives} events={filteredEvents} activeN={activeN} activeE={activeE} onN={handleNarr} onE={handleEvent} xLabels={xLabels} chartWidth={showPanel ? 720 : 1000} />
           </div>
 
           {/* Timing disclaimer */}
-          <div style={{ padding: "6px 16px 10px", flexShrink: 0 }}>
-            <div style={{ fontSize: "8.5px", color: "rgba(255,255,255,0.15)", fontFamily: "'DM Mono',monospace", lineHeight: "1.5" }}>
-              이벤트 시점 기준: 미국 동부시간(ET) · 🌅 장 전 4:00–9:30 AM · ☀️ 장 중 9:30 AM–4:00 PM · 🌙 장 후 4:00–8:00 PM
-              <br />
-              장 후 발표 이벤트(🌙)는 다음 거래일 주가에 반영되며, 차트 마커는 반영일 기준으로 표시됩니다.
+          <div style={{ padding: "4px 16px 8px", flexShrink: 0 }}>
+            <div style={{ fontSize: "8px", color: "rgba(255,255,255,0.13)", fontFamily: "'DM Mono',monospace", lineHeight: "1.5" }}>
+              * 미국 동부시간(ET) 기준 · 🌅 장 전 · ☀️ 장 중 · 🌙 장 후 — 장 후 발표(🌙)는 다음 거래일 반영
             </div>
           </div>
         </div>
 
         {/* Narrative detail panel */}
         {showPanel && (
-          <div style={{ width: "320px", flexShrink: 0 }}>
+          <div style={{ width: "360px", flexShrink: 0 }}>
             <DetailPanel narr={activeNarr} allEvents={filteredEvents} activeE={activeE} onE={handleEvent} onClose={() => setActiveN(null)} />
           </div>
         )}
