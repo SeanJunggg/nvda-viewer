@@ -35,48 +35,48 @@ const PRICE_1Y = [
 // NARRATIVES
 // ══════════════════════════════════════════
 const NARR_5Y = [
-  { id: "c1", s: "2021-01-04", e: "2021-03-31", sp: 13.09, ep: 13.32, label: "금리 주도\n멀티플 리셋", sub: "+1.8%", tone: "neutral", detail: "금리 상승으로 멀티플 재조정. 3월 안정세 이후 GPU 수요와 AI 성장에 재집중.", refs: ["Federal Reserve", "Nasdaq"], ev: { s: 46.9, e: 43.4, d: "−7.5%" } },
-  { id: "c2", s: "2021-04-01", e: "2021-12-31", sp: 13.78, ep: 29.36, label: "어닝 서프라이즈\n4:1 분할 랠리", sub: "+113%", tone: "bull", detail: "반복적 어닝 서프라이즈와 4:1 분할이 모멘텀 증폭. AI/데이터센터 리더십 유지.", refs: ["NVIDIA", "CNBC"], ev: { s: 43.6, e: 66.0, d: "+51.4%" } },
-  { id: "c3", s: "2022-01-01", e: "2022-10-11", sp: 30.07, ep: 11.57, label: "게이밍 하강\n수출 통제 충격", sub: "−62%", tone: "bear", detail: "Arm 무산, 게이밍 충격, 수출 통제로 중국향 GPU 구조적 부담.", refs: ["NVIDIA", "FTC", "CNBC"], ev: { s: 60.8, e: 23.7, d: "−61.0%" } },
-  { id: "c4", s: "2022-10-12", e: "2023-05-24", sp: 11.49, ep: 30.52, label: "AI 변곡점\n가이던스 쇼크", sub: "+166%", tone: "bull", detail: "5월 가이던스 쇼크로 새 밸류에이션 체제 확립. 생성형 AI 인프라 수요 중심.", refs: ["NVIDIA", "Nasdaq"], ev: { s: 23.1, e: 71.2, d: "+208%" } },
-  { id: "c5", s: "2023-05-25", e: "2023-12-31", sp: 37.96, ep: 49.5, label: "생성형 AI\ncapex 급등", sub: "+30%", tone: "bull", detail: "하이퍼스케일러 capex 단계적 변화. 풀스택 해자 강화와 폭발적 실적.", refs: ["NVIDIA", "BIS"], ev: { s: 77.1, e: 46.4, d: "−39.8%" } },
-  { id: "c6", s: "2024-01-01", e: "2024-12-31", sp: 48.15, ep: 134.25, label: "Blackwell 로드맵\n10:1 분할", sub: "+179%", tone: "bull", detail: "Beat-and-raise 분기, Blackwell 로드맵, 10:1 분할이 높은 기대감 체제 강화.", refs: ["NVIDIA", "CNBC"], ev: { s: 45.2, e: 41.9, d: "−7.3%" } },
-  { id: "c7", s: "2025-01-01", e: "2025-05-28", sp: 138.27, ep: 134.79, label: "기록적 실적 vs\nH20 수출 규제", sub: "−2.5%", tone: "neutral", detail: "기록적 실적과 H20 수출 라이선스 요구 충돌. 핵심 변수가 정책으로 이동.", refs: ["NVIDIA", "CNBC"], ev: { s: 43.2, e: 36.8, d: "−14.8%" } },
-  { id: "c8", s: "2025-05-29", e: "2025-12-31", sp: 139.16, ep: 186.5, label: "Blackwell 실행\n희소성 강세", sub: "+34%", tone: "bull", detail: "Blackwell/Ultra 배포, 기록적 분기, $600억 자사주 매입으로 실행력 강화.", refs: ["NVIDIA", "Reuters"], ev: { s: 32.9, e: 34.9, d: "+6.1%" } },
+  { id: "c1", s: "2021-01-04", e: "2021-03-31", sp: 13.09, ep: 13.32, label: "금리 주도\n멀티플 리셋", sub: "+1.8%", tone: "neutral", detail: "미 10년물 금리가 0.9%에서 1.7%까지 급등하며 기술주 전반에 멀티플 재조정이 발생했습니다. NVIDIA의 EV/EBITDA는 46.9x에서 43.4x로 하락했으나, 데이터센터 매출이 전년 대비 +97% 성장하며 AI/가속 컴퓨팅 수요의 구조적 강도를 확인. 3월 안정세를 찾으며 이후 상승 랠리의 기반을 마련한 기간입니다.", refs: ["Federal Reserve", "Nasdaq"], ev: { s: 46.9, e: 43.4, d: "−7.5%" }, bullets: ["국채 금리 급등 → 성장주 매도", "테마성 반등 반납"] },
+  { id: "c2", s: "2021-04-01", e: "2021-12-31", sp: 13.78, ep: 29.36, label: "어닝 서프라이즈\n4:1 분할 랠리", sub: "+113%", tone: "bull", detail: "3개 분기 연속 어닝 서프라이즈가 게이밍(+106% YoY)과 데이터센터(+79% YoY) 양쪽의 강세를 확인시켰습니다. 7월 4:1 주식 분할이 개인 투자자 접근성을 높이며 모멘텀을 증폭. EV/EBITDA가 43.6x에서 66.0x까지 확장되며 'AI 수혜 프리미엄'이 본격적으로 가격에 반영되기 시작한 구간입니다.", refs: ["NVIDIA", "CNBC"], ev: { s: 43.6, e: 66.0, d: "+51.4%" }, bullets: ["3분기 연속 어닝 서프라이즈", "4:1 분할 → 유동성 확대"] },
+  { id: "c3", s: "2022-01-01", e: "2022-10-11", sp: 30.07, ep: 11.57, label: "게이밍 하강\n수출 통제 충격", sub: "−62%", tone: "bear", detail: "Arm 인수 무산($400억 규모)으로 전략적 M&A 경로가 사라지고, 게이밍 매출이 전분기 대비 −44% 급락하며 채널 재고 과잉을 확인했습니다. 8월 A100/H100 수출 통제가 중국 데이터센터 매출에 구조적 부담을 추가. EV/EBITDA 60.8x → 23.7x로 붕괴되며, AI 장기 성장 스토리와 단기 실적 충격 사이에서 시장이 저울질한 기간입니다.", refs: ["NVIDIA", "FTC", "CNBC"], ev: { s: 60.8, e: 23.7, d: "−61.0%" }, bullets: ["Arm 인수 무산 + 게이밍 −44%", "A100/H100 수출 통제 시작"] },
+  { id: "c4", s: "2022-10-12", e: "2023-05-24", sp: 11.49, ep: 30.52, label: "AI 변곡점\n가이던스 쇼크", sub: "+166%", tone: "bull", detail: "게이밍 재고 소진 후 안정화에 이어, 2023년 5월 FY24 Q2 가이던스를 $110억으로 제시해 컨센서스($72억)를 53% 상회하는 '가이던스 쇼크'가 발생했습니다. 생성형 AI가 데이터센터 수요의 단계적 변화를 이끌고 있음을 시사하며, EV/EBITDA가 23.1x에서 71.2x로 재설정. 밸류에이션 체제 자체가 전환된 변곡점입니다.", refs: ["NVIDIA", "Nasdaq"], ev: { s: 23.1, e: 71.2, d: "+208%" }, bullets: ["가이던스 +53% 상회", "밸류에이션 체제 전환"] },
+  { id: "c5", s: "2023-05-25", e: "2023-12-31", sp: 37.96, ep: 49.5, label: "생성형 AI\ncapex 급등", sub: "+30%", tone: "bull", detail: "하이퍼스케일러들의 AI 설비투자가 단계적으로 변화하면서 NVIDIA 데이터센터 매출이 폭발적으로 성장. Q2 매출 $135억(+101% YoY), Q3 $181억(+206% YoY)으로 실적 상승이 가속화되었습니다. 다만 10월 수출 통제 강화가 중국 시장 접근 제약을 심화시켰고, EV/EBITDA는 오히려 77.1x → 46.4x로 압축되며 '이익이 주가를 추월한' 구간입니다.", refs: ["NVIDIA", "BIS"], ev: { s: 77.1, e: 46.4, d: "−39.8%" }, bullets: ["Q3 매출 +206% YoY", "수출 통제 강화 → 리스크 프리미엄"] },
+  { id: "c6", s: "2024-01-01", e: "2024-12-31", sp: 48.15, ep: 134.25, label: "Blackwell 로드맵\n10:1 분할", sub: "+179%", tone: "bull", detail: "4개 분기 연속 Beat-and-Raise로 'AI 수요 > 공급' 논지를 지속적으로 강화. 3월 GTC에서 Blackwell 아키텍처를 공개하며 차세대 로드맵을 확정하고, 6월 10:1 분할로 투자자 접근성을 재확대했습니다. 데이터센터 매출이 전체의 80%+ 비중을 차지하며, EV/EBITDA 45.2x → 41.9x로 이익 성장이 주가 상승을 상쇄한 구간입니다.", refs: ["NVIDIA", "CNBC"], ev: { s: 45.2, e: 41.9, d: "−7.3%" }, bullets: ["4분기 연속 Beat-and-Raise", "10:1 분할 + Blackwell 공개"] },
+  { id: "c7", s: "2025-01-01", e: "2025-05-28", sp: 138.27, ep: 134.79, label: "기록적 실적 vs\nH20 수출 규제", sub: "−2.5%", tone: "neutral", detail: "FY25 연간 매출 $1,305억(+114% YoY) 기록과 Blackwell 생산 확대가 'AI 인프라 희소성' 체제를 연장했으나, 4월 H20 중국 수출 라이선스 요구가 유형의 재무 영향($55억 비용)을 가져왔습니다. 핵심 변수가 '실적 성장'에서 '정책 허가'로 이동하면서, 강한 펀더멘털에도 주가가 횡보한 전형적 '정책 리스크 프리미엄' 구간입니다.", refs: ["NVIDIA", "CNBC"], ev: { s: 43.2, e: 36.8, d: "−14.8%" }, bullets: ["H20 비용 $55억 반영", "핵심 변수: 실적→정책 이동"] },
+  { id: "c8", s: "2025-05-29", e: "2025-12-31", sp: 139.16, ep: 186.5, label: "Blackwell 실행\n희소성 강세", sub: "+34%", tone: "bull", detail: "Blackwell Ultra(GB300) 시스템 상용 배포, Q3 $570억 매출(데이터센터 $512억), $600억 자사주 매입 발표로 실행력 중심의 강세 서사가 회귀했습니다. H20 중국 출하는 0을 가정하면서도 기저 수요가 가이던스를 견인. Q4 $650억 가이던스가 AI 인프라 구축 규모를 재확인하며, 중국은 헤드라인 리스크로 남았으나 주가에 대한 지배력은 약화된 기간입니다.", refs: ["NVIDIA", "Reuters"], ev: { s: 32.9, e: 34.9, d: "+6.1%" }, bullets: ["Q3 $570억 + Q4 $650억 가이던스", "$600억 자사주 매입 → 주주환원"] },
 ];
 const NARR_1Y = [
-  { id: "f1", s: "2025-01-02", e: "2025-02-26", sp: 138.27, ep: 131.24, label: "Blackwell 확인 대기\n높은 기대감", sub: "−5.1%", tone: "neutral", detail: "Blackwell 생산 확대 확인 대기. Beat-and-raise 기대와 고성장 논쟁.", refs: ["NVIDIA"], ev: { s: 43.2, e: 35.7, d: "−17.3%" } },
-  { id: "f2", s: "2025-02-27", e: "2025-05-28", sp: 120.12, ep: 134.79, label: "수출 통제 충격\n정책 리스크 부상", sub: "+12.2%", tone: "neutral", detail: "H20 라이선스 요건 → 비용 발생. '수요 강력, 수출 규제로 제약'으로 재구성.", refs: ["CNBC", "NVIDIA"], ev: { s: 32.7, e: 32.9, d: "+0.7%" } },
-  { id: "f3", s: "2025-05-29", e: "2025-08-27", sp: 139.16, ep: 181.58, label: "Blackwell 배포\n완판 수요 확인", sub: "+30.5%", tone: "bull", detail: "Blackwell/Ultra 출하, 완판 수요 확인. 수정 H20과 Ultra 배포로 심리 안정.", refs: ["NVIDIA", "CNBC"], ev: { s: 34.0, e: 40.0, d: "+17.8%" } },
-  { id: "f4", s: "2025-08-28", e: "2025-11-19", sp: 180.15, ep: 186.51, label: "희소성 AI 인프라\n기록적 분기", sub: "+3.5%", tone: "bull", detail: "AI 인프라 희소성 지배. $600억 자사주 매입. Q3 실적이 구축 사이클 재확인.", refs: ["NVIDIA"], ev: { s: 39.7, e: 36.2, d: "−8.9%" } },
-  { id: "f5", s: "2025-11-20", e: "2025-12-31", sp: 180.63, ep: 186.5, label: "기록적 가이던스\n중국 리스크 공존", sub: "+3.2%", tone: "neutral", detail: "기록적 가이던스와 중국 정책 불확실성 혼재.", refs: ["NVIDIA", "Reuters"], ev: { s: 35.0, e: 36.2, d: "+3.3%" } },
+  { id: "f1", s: "2025-01-02", e: "2025-02-26", sp: 138.27, ep: 131.24, label: "Blackwell 확인 대기\n높은 기대감", sub: "−5.1%", tone: "neutral", detail: "FY25 Q4 실적 발표(2/26)를 앞두고, Blackwell 생산 확대 속도와 데이터센터 수요의 공급 제약 지속 여부를 확인하려는 대기 심리가 지배적이었습니다. Beat-and-raise에 대한 높은 기대와 '고성장 둔화 시작' 우려가 공존하며 EV/EBITDA가 43.2x에서 35.7x로 하락. 실적 자체보다 가이던스가 '기대 레벨'을 충족시키는지가 핵심 관전 포인트였습니다.", refs: ["NVIDIA"], ev: { s: 43.2, e: 35.7, d: "−17.3%" }, bullets: ["Beat-and-raise 기대 vs 성장 둔화 우려", "Blackwell 생산 속도 확인 대기"] },
+  { id: "f2", s: "2025-02-27", e: "2025-05-28", sp: 120.12, ep: 134.79, label: "수출 통제 충격\n정책 리스크 부상", sub: "+12.2%", tone: "neutral", detail: "4/9 H20 중국 수출 라이선스 요구 통보, 4/15 관련 비용 $55억 공시, 4/17 젠슨 황 베이징 방문으로 정책 리스크가 연쇄적으로 부각된 구간입니다. 5월 실적에서 중국향 H20 출하를 0으로 가정한 가이던스를 제시하며, '수요는 강력하지만 수출 규제가 매출 전환을 제약한다'는 프레임으로 스토리를 재구성. 기저 수요 대비 주가가 저평가되었다는 논쟁도 시작되었습니다.", refs: ["CNBC", "NVIDIA"], ev: { s: 32.7, e: 32.9, d: "+0.7%" }, bullets: ["H20 $55억 비용 + 중국 출하 0 가정", "정책이 매출 전환의 핵심 변수로 부상"] },
+  { id: "f3", s: "2025-05-29", e: "2025-08-27", sp: 139.16, ep: 181.58, label: "Blackwell 배포\n완판 수요 확인", sub: "+30.5%", tone: "bull", detail: "제품 주기 실행에 재집중한 구간입니다. 7/3 CoreWeave·Dell의 GB300 NVL72 상용 배포로 Blackwell Ultra가 로드맵이 아닌 실제 출하임을 확인. 7/15 미 정부의 H20 라이선스 승인 확약으로 전면 차단 테일 리스크가 감소했습니다. 수요가 공급을 앞서는 구조가 지속되며 EV/EBITDA가 34.0x에서 40.0x로 확장, 정책 이슈에서 실행력 기반 강세로 서사가 전환되었습니다.", refs: ["NVIDIA", "CNBC"], ev: { s: 34.0, e: 40.0, d: "+17.8%" }, bullets: ["GB300 NVL72 상용 배포 시작", "H20 라이선스 승인 확약 → 리스크 완화"] },
+  { id: "f4", s: "2025-08-28", e: "2025-11-19", sp: 180.15, ep: 186.51, label: "희소성 AI 인프라\n기록적 분기", sub: "+3.5%", tone: "bull", detail: "'AI 인프라 희소성' 신호가 이 구간을 지배했습니다. 8/26 $600억 자사주 매입 발표가 현금 창출 지속성에 대한 자신감을 표현하고, Q2 실적에서 중국 H20 출하 0을 명시하며 기저 수요의 강도를 부각. 11/19 Q3 $570억(데이터센터 $512억) 기록 매출과 Q4 $650억 가이던스가 AI 구축 사이클 규모를 재확인했습니다. 높은 절대 수준에서의 점진적 상승이 특징인 구간입니다.", refs: ["NVIDIA"], ev: { s: 39.7, e: 36.2, d: "−8.9%" }, bullets: ["$600억 자사주 매입 → 현금 창출 자신감", "Q3 $570억 기록 + Q4 $650억 가이던스"] },
+  { id: "f5", s: "2025-11-20", e: "2025-12-31", sp: 180.63, ep: 186.5, label: "기록적 가이던스\n중국 리스크 공존", sub: "+3.2%", tone: "neutral", detail: "기록적 Q4 가이던스($650억)가 주가의 지지 기반이 되었으나, 로이터의 바이트댄스 등 중국 기업 대규모 구매 계획 보도가 '정책 허가 없으면 매출 전환 불가'라는 동일한 핵심 변수를 재부각했습니다. 성장의 절대 규모(지지)와 중국 정책 불확실성(리스크 프리미엄)이 혼재하며 좁은 범위에서 움직인 구간으로, 2026년에도 같은 구조가 이어질 것인지가 시장의 관심사였습니다.", refs: ["NVIDIA", "Reuters"], ev: { s: 35.0, e: 36.2, d: "+3.3%" }, bullets: ["Q4 $650억 가이던스 → 지지", "중국 수요 불확실성 → 리스크 프리미엄"] },
 ];
 
 // ══════════════════════════════════════════
 // EVENTS
 // ══════════════════════════════════════════
 const ALL_EVENTS = [
-  { id: "e1", date: "2021-02-25", reflectDate: "2021-02-25", type: "macro", timing: "intraday", title: "미 국채 금리 급등", desc: "미 10년물 국채 금리가 1.6%까지 급등하며 고평가 기술주 전반에 매도세 촉발. 금리 상승은 미래 이익의 현재가치를 낮춰 '장기 듀레이션' 성장주인 NVIDIA에 직접적 멀티플 하락 압력으로 작용했습니다.", pct: "−8.2%", impact: "neg", refs: ["Fed"] },
-  { id: "e2", date: "2021-05-25", reflectDate: "2021-05-26", type: "earnings", timing: "after", title: "FY22 Q1 서프라이즈", desc: "매출 $56.6억으로 기록 경신. 게이밍(+106% YoY)과 데이터센터(+79% YoY) 모두 강세를 보이며 가속 컴퓨팅 수요가 광범위함을 재확인. 가이던스도 시장 기대를 상회했습니다.", pct: "+0.3%", impact: "pos", refs: ["NVIDIA"] },
-  { id: "e3", date: "2021-07-20", reflectDate: "2021-07-20", type: "finance", timing: "pre", title: "4:1 분할 효력", desc: "4:1 주식 분할이 발효되어 분할 조정 기준으로 거래 시작. 기업 가치 변화 없이 주당 가격을 낮춰 개인 투자자 접근성을 확대하고, 반도체주에 대한 투자자 열기와 맞물려 모멘텀을 유지했습니다.", pct: "−0.9%", impact: "neu", refs: ["NVIDIA"] },
-  { id: "e4", date: "2022-02-07", reflectDate: "2022-02-07", type: "deal", timing: "pre", title: "Arm 인수 무산", desc: "SoftBank와의 $400억 규모 Arm 인수가 FTC 등 다국적 규제 반대로 최종 철회. 주요 전략적 M&A 경로가 사라졌으나, 시장은 불확실성 해소로 소폭 안도. $12.5억 선급금은 SoftBank가 보유.", pct: "+1.7%", impact: "neu", refs: ["NVIDIA", "FTC"] },
-  { id: "e5", date: "2022-08-05", reflectDate: "2022-08-08", type: "earnings", timing: "after", title: "FY23 Q2 실적 경고", desc: "2분기 매출을 $67억으로 잠정 발표, 기존 가이던스 $81억 대비 17% 하향. 게이밍 매출이 전분기 대비 −44% 급락하며 채널 재고 과잉과 소비 수요 공백을 확인. 단기 이익 기대치가 전면 재설정되었습니다.", pct: "−6.3%", impact: "neg", refs: ["NVIDIA"] },
-  { id: "e6", date: "2022-08-31", reflectDate: "2022-09-01", type: "regulatory", timing: "after", title: "수출 통제: A100/H100", desc: "미국 상무부가 A100/H100 등 첨단 데이터센터 GPU의 중국·러시아 수출에 라이선스 요구. NVIDIA는 해당 분기 약 $4억 매출 영향을 경고. 중국 데이터센터 시장에 대한 구조적 정책 리스크 프리미엄이 형성되었습니다.", pct: "−2.4%", impact: "neg", refs: ["CNBC"] },
-  { id: "e7", date: "2023-05-24", reflectDate: "2023-05-25", type: "earnings", timing: "after", title: "가이던스 쇼크", desc: "FY24 Q1 매출 $71.9억 보고 후, Q2 매출 가이던스를 $110억으로 제시해 컨센서스($72억)를 53% 상회. 생성형 AI가 주도하는 데이터센터 수요의 단계적 변화를 시사하며, 밸류에이션 체제 자체를 재설정한 이벤트입니다.", pct: "−0.5%", impact: "pos", refs: ["NVIDIA"] },
-  { id: "e8", date: "2023-10-17", reflectDate: "2023-10-17", type: "regulatory", timing: "pre", title: "수출 통제 강화", desc: "미 상무부 BIS가 수출 통제를 확대하여 중국향 첨단 AI 칩 제약을 강화. NVIDIA는 규제 준수 대안 제품 개발과 공급 경로 변경을 강제받았고, 단기 매출 시점에 대한 불확실성이 증가했습니다.", pct: "−4.7%", impact: "neg", refs: ["BIS"] },
-  { id: "e9", date: "2024-02-21", reflectDate: "2024-02-22", type: "earnings", timing: "after", title: "FY24 Q4 Beat-and-Raise", desc: "Q4 매출 $221억(+265% YoY)으로 기록 경신, Q1 가이던스 $240억 제시. 데이터센터 매출이 $184억으로 전체의 83%를 차지하며 'AI 수요가 공급을 초과한다'는 논지를 재확인. 멀티 쿼터 랠리의 핵심 촉매.", pct: "−2.9%", impact: "pos", refs: ["NVIDIA"] },
-  { id: "e10", date: "2024-03-18", reflectDate: "2024-03-18", type: "product", timing: "intraday", title: "Blackwell 공개", desc: "GTC 2024 키노트에서 Blackwell 아키텍처 공개. Hopper 대비 AI 학습 성능 4배, 추론 30배 향상을 제시하며 차세대 데이터센터 사이클의 리스크를 낮추고, 지속적 가격 결정력에 대한 기대를 강화했습니다.", pct: "+0.7%", impact: "pos", refs: ["NVIDIA"] },
-  { id: "e11", date: "2025-02-26", reflectDate: "2025-02-27", type: "earnings", timing: "after", title: "FY25 신기록", desc: "FY25 연간 매출 $1,305억(+114% YoY), Q4 매출 $393억 기록. 초기 Blackwell 판매가 본격화되며 추론 AI가 컴퓨팅 수요를 증가시키고 있다고 강조. 빠른 생산 확대가 강세론을 뒷받침했습니다.", pct: "+3.7%", impact: "pos", refs: ["NVIDIA"] },
-  { id: "e12", date: "2025-03-18", reflectDate: "2025-03-18", type: "product", timing: "intraday", title: "GTC: Blackwell Ultra", desc: "GTC 2025에서 Blackwell Ultra(2025 하반기 출하)를 발표하고 2026년 차세대 Vera Rubin 플랫폼을 예고. 연간 제품 출시 주기를 공식화하며 커스텀 ASIC 경쟁사 대비 로드맵 우위를 시사했습니다.", pct: "−3.4%", impact: "pos", refs: ["CNBC"] },
-  { id: "e13", date: "2025-04-09", reflectDate: "2025-04-09", type: "regulatory", timing: "intraday", title: "H20 라이선스 요구", desc: "미 정부가 H20 제품의 중국 수출에 라이선스를 요구한다고 통보. 중국 매출의 인식 시기와 규모에 대한 불확실성이 직접적으로 상승. 동시에 관세 유예 뉴스와 겹쳐 당일 주가는 시장 전반 반등과 함께 급등했습니다.", pct: "+18.7%", impact: "neg", refs: ["CNBC", "NVIDIA"] },
-  { id: "e14", date: "2025-04-15", reflectDate: "2025-04-16", type: "finance", timing: "after", title: "H20 비용 $55억", desc: "SEC 파일링을 통해 H20 수출 제한 관련 재고·구매의무 비용 $55억을 Q1에 반영할 것이라고 공시. 중국 정책의 재무적 영향이 이론이 아닌 수치로 구체화되며, 단기 마진과 매출 모델링의 핵심 변수가 되었습니다.", pct: "+1.4%", impact: "neg", refs: ["CNBC"] },
-  { id: "e15", date: "2025-05-28", reflectDate: "2025-05-29", type: "earnings", timing: "after", title: "FY26 Q1: H20 비용 반영", desc: "Q1 매출 $442억(+69% YoY) 보고, H20 관련 $45억 비용 반영. 가이던스에서 중국향 H20 출하를 0으로 가정하여 투자자에게 기본 시나리오 모델을 명확히 제시. 기저 수요는 강력함을 재확인했습니다.", pct: "−0.5%", impact: "pos", refs: ["NVIDIA"] },
-  { id: "e16", date: "2025-07-03", reflectDate: "2025-07-03", type: "product", timing: "intraday", title: "Blackwell Ultra 배포", desc: "CoreWeave와 Dell이 GB300 NVL72 기반 Blackwell Ultra 시스템의 상용 배포를 발표. 로드맵상 약속이 아닌 실제 출하가 시작되었음을 확인하며, 전환 기간 동안 수요가 공급을 앞설 것이라는 내러티브를 뒷받침했습니다.", pct: "+1.3%", impact: "pos", refs: ["CNBC"] },
-  { id: "e17", date: "2025-07-15", reflectDate: "2025-07-15", type: "regulatory", timing: "intraday", title: "H20 재개 기대", desc: "NVIDIA가 H20 판매 재개를 위한 라이선스 신청 중이며, 미 정부로부터 승인이 부여될 것이라는 확약을 받았다고 발표. 장기 전면 차단에 대한 테일 리스크가 줄어들며 시장 심리가 개선되었습니다.", pct: "+4.0%", impact: "pos", refs: ["CNBC"] },
-  { id: "e18", date: "2025-08-26", reflectDate: "2025-08-27", type: "finance", timing: "after", title: "$600억 자사주 매입", desc: "FY26 Q2 실적 발표와 함께 자사주 매입 승인액을 $600억 추가. AI 인프라 구축 기간 중에도 현금 창출이 지속 가능하다는 자신감의 시그널로, 정책 불확실성 속에서 주가 하방 지지 역할을 했습니다.", pct: "+1.1%", impact: "pos", refs: ["NVIDIA"] },
-  { id: "e19", date: "2025-08-27", reflectDate: "2025-08-28", type: "earnings", timing: "after", title: "FY26 Q2", desc: "Q2 매출 보고, 강한 분기별 성장을 이어가면서 해당 분기 중국향 H20 판매가 0이었음을 명시. 가이던스도 H20 중국 출하 미반영을 전제로 제시하여, 중국 제외 기저 수요의 강도를 부각시켰습니다.", pct: "−0.1%", impact: "pos", refs: ["NVIDIA"] },
-  { id: "e20", date: "2025-11-19", reflectDate: "2025-11-20", type: "earnings", timing: "after", title: "FY26 Q3: $570억", desc: "Q3 매출 $570억(데이터센터 $512억) 기록, Q4 가이던스 $650억±2% 제시. Blackwell이 '완판' 상태이며 클라우드 GPU 수요가 생산 능력을 초과한다고 강조. AI 인프라 구축 규모를 재차 확인하는 이벤트.", pct: "+2.9%", impact: "pos", refs: ["NVIDIA"] },
-  { id: "e21", date: "2025-12-31", reflectDate: "2025-12-31", type: "macro", timing: "intraday", title: "2026 중국 불확실성", desc: "로이터가 바이트댄스 등 중국 기업들의 2026년 NVIDIA 칩 대규모 구매 계획을 보도하되, H200 판매 승인 여부에 달려있다고 전달. 2025년과 동일한 핵심 변수—정책 허가가 수요의 매출 전환을 결정—가 2026년에도 지속됨을 부각.", pct: "−0.6%", impact: "neu", refs: ["Reuters"] },
+  { id: "e1", date: "2021-02-25", reflectDate: "2021-02-25", type: "macro", timing: "intraday", title: "미 국채 금리 급등", desc: "미 10년물 국채 금리가 1.6%까지 급등하며 고평가 기술주 전반에 매도세 촉발. 금리 상승은 미래 이익의 현재가치를 낮춰 '장기 듀레이션' 성장주인 NVIDIA에 직접적 멀티플 하락 압력으로 작용했습니다.", pct: "−8.2%", impact: "neg", refs: ["Fed"], sources: [{ name: "Reuters", url: "#" }, { name: "CNBC", url: "#" }] },
+  { id: "e2", date: "2021-05-25", reflectDate: "2021-05-26", type: "earnings", timing: "after", title: "FY22 Q1 서프라이즈", desc: "매출 $56.6억으로 기록 경신. 게이밍(+106% YoY)과 데이터센터(+79% YoY) 모두 강세를 보이며 가속 컴퓨팅 수요가 광범위함을 재확인. 가이던스도 시장 기대를 상회했습니다.", pct: "+0.3%", impact: "pos", refs: ["NVIDIA"], sources: [{ name: "회사 보도자료", url: "#" }, { name: "Bloomberg", url: "#" }] },
+  { id: "e3", date: "2021-07-20", reflectDate: "2021-07-20", type: "finance", timing: "pre", title: "4:1 분할 효력", desc: "4:1 주식 분할이 발효되어 분할 조정 기준으로 거래 시작. 기업 가치 변화 없이 주당 가격을 낮춰 개인 투자자 접근성을 확대하고, 반도체주에 대한 투자자 열기와 맞물려 모멘텀을 유지했습니다.", pct: "−0.9%", impact: "neu", refs: ["NVIDIA"], sources: [{ name: "NVIDIA IR", url: "#" }] },
+  { id: "e4", date: "2022-02-07", reflectDate: "2022-02-07", type: "deal", timing: "pre", title: "Arm 인수 무산", desc: "SoftBank와의 $400억 규모 Arm 인수가 FTC 등 다국적 규제 반대로 최종 철회. 주요 전략적 M&A 경로가 사라졌으나, 시장은 불확실성 해소로 소폭 안도. $12.5억 선급금은 SoftBank가 보유.", pct: "+1.7%", impact: "neu", refs: ["NVIDIA", "FTC"], sources: [{ name: "FTC 공식", url: "#" }, { name: "Reuters", url: "#" }] },
+  { id: "e5", date: "2022-08-05", reflectDate: "2022-08-08", type: "earnings", timing: "after", title: "FY23 Q2 실적 경고", desc: "2분기 매출을 $67억으로 잠정 발표, 기존 가이던스 $81억 대비 17% 하향. 게이밍 매출이 전분기 대비 −44% 급락하며 채널 재고 과잉과 소비 수요 공백을 확인. 단기 이익 기대치가 전면 재설정되었습니다.", pct: "−6.3%", impact: "neg", refs: ["NVIDIA"], sources: [{ name: "회사 보도자료", url: "#" }, { name: "CNBC", url: "#" }] },
+  { id: "e6", date: "2022-08-31", reflectDate: "2022-09-01", type: "regulatory", timing: "after", title: "수출 통제: A100/H100", desc: "미국 상무부가 A100/H100 등 첨단 데이터센터 GPU의 중국·러시아 수출에 라이선스 요구. NVIDIA는 해당 분기 약 $4억 매출 영향을 경고. 중국 데이터센터 시장에 대한 구조적 정책 리스크 프리미엄이 형성되었습니다.", pct: "−2.4%", impact: "neg", refs: ["CNBC"], sources: [{ name: "CNBC", url: "#" }, { name: "SEC Filing", url: "#" }] },
+  { id: "e7", date: "2023-05-24", reflectDate: "2023-05-25", type: "earnings", timing: "after", title: "가이던스 쇼크", desc: "FY24 Q1 매출 $71.9억 보고 후, Q2 매출 가이던스를 $110억으로 제시해 컨센서스($72억)를 53% 상회. 생성형 AI가 주도하는 데이터센터 수요의 단계적 변화를 시사하며, 밸류에이션 체제 자체를 재설정한 이벤트입니다.", pct: "−0.5%", impact: "pos", refs: ["NVIDIA"], sources: [{ name: "회사 보도자료", url: "#" }, { name: "Financial Times", url: "#" }] },
+  { id: "e8", date: "2023-10-17", reflectDate: "2023-10-17", type: "regulatory", timing: "pre", title: "수출 통제 강화", desc: "미 상무부 BIS가 수출 통제를 확대하여 중국향 첨단 AI 칩 제약을 강화. NVIDIA는 규제 준수 대안 제품 개발과 공급 경로 변경을 강제받았고, 단기 매출 시점에 대한 불확실성이 증가했습니다.", pct: "−4.7%", impact: "neg", refs: ["BIS"], sources: [{ name: "BIS 공식", url: "#" }, { name: "Reuters", url: "#" }] },
+  { id: "e9", date: "2024-02-21", reflectDate: "2024-02-22", type: "earnings", timing: "after", title: "FY24 Q4 Beat-and-Raise", desc: "Q4 매출 $221억(+265% YoY)으로 기록 경신, Q1 가이던스 $240억 제시. 데이터센터 매출이 $184억으로 전체의 83%를 차지하며 'AI 수요가 공급을 초과한다'는 논지를 재확인. 멀티 쿼터 랠리의 핵심 촉매.", pct: "−2.9%", impact: "pos", refs: ["NVIDIA"], sources: [{ name: "회사 보도자료", url: "#" }, { name: "Bloomberg", url: "#" }] },
+  { id: "e10", date: "2024-03-18", reflectDate: "2024-03-18", type: "product", timing: "intraday", title: "Blackwell 공개", desc: "GTC 2024 키노트에서 Blackwell 아키텍처 공개. Hopper 대비 AI 학습 성능 4배, 추론 30배 향상을 제시하며 차세대 데이터센터 사이클의 리스크를 낮추고, 지속적 가격 결정력에 대한 기대를 강화했습니다.", pct: "+0.7%", impact: "pos", refs: ["NVIDIA"], sources: [{ name: "NVIDIA GTC", url: "#" }, { name: "The Verge", url: "#" }] },
+  { id: "e11", date: "2025-02-26", reflectDate: "2025-02-27", type: "earnings", timing: "after", title: "FY25 신기록", desc: "FY25 연간 매출 $1,305억(+114% YoY), Q4 매출 $393억 기록. 초기 Blackwell 판매가 본격화되며 추론 AI가 컴퓨팅 수요를 증가시키고 있다고 강조. 빠른 생산 확대가 강세론을 뒷받침했습니다.", pct: "+3.7%", impact: "pos", refs: ["NVIDIA"], sources: [{ name: "회사 보도자료", url: "#" }, { name: "CNBC", url: "#" }] },
+  { id: "e12", date: "2025-03-18", reflectDate: "2025-03-18", type: "product", timing: "intraday", title: "GTC: Blackwell Ultra", desc: "GTC 2025에서 Blackwell Ultra(2025 하반기 출하)를 발표하고 2026년 차세대 Vera Rubin 플랫폼을 예고. 연간 제품 출시 주기를 공식화하며 커스텀 ASIC 경쟁사 대비 로드맵 우위를 시사했습니다.", pct: "−3.4%", impact: "pos", refs: ["CNBC"], sources: [{ name: "NVIDIA GTC", url: "#" }, { name: "CNBC", url: "#" }] },
+  { id: "e13", date: "2025-04-09", reflectDate: "2025-04-09", type: "regulatory", timing: "intraday", title: "H20 라이선스 요구", desc: "미 정부가 H20 제품의 중국 수출에 라이선스를 요구한다고 통보. 중국 매출의 인식 시기와 규모에 대한 불확실성이 직접적으로 상승. 동시에 관세 유예 뉴스와 겹쳐 당일 주가는 시장 전반 반등과 함께 급등했습니다.", pct: "+18.7%", impact: "neg", refs: ["CNBC", "NVIDIA"], sources: [{ name: "CNBC", url: "#" }, { name: "TechCrunch", url: "#" }] },
+  { id: "e14", date: "2025-04-15", reflectDate: "2025-04-16", type: "finance", timing: "after", title: "H20 비용 $55억", desc: "SEC 파일링을 통해 H20 수출 제한 관련 재고·구매의무 비용 $55억을 Q1에 반영할 것이라고 공시. 중국 정책의 재무적 영향이 이론이 아닌 수치로 구체화되며, 단기 마진과 매출 모델링의 핵심 변수가 되었습니다.", pct: "+1.4%", impact: "neg", refs: ["CNBC"], sources: [{ name: "SEC Filing", url: "#" }, { name: "CNBC", url: "#" }] },
+  { id: "e15", date: "2025-05-28", reflectDate: "2025-05-29", type: "earnings", timing: "after", title: "FY26 Q1: H20 비용 반영", desc: "Q1 매출 $442억(+69% YoY) 보고, H20 관련 $45억 비용 반영. 가이던스에서 중국향 H20 출하를 0으로 가정하여 투자자에게 기본 시나리오 모델을 명확히 제시. 기저 수요는 강력함을 재확인했습니다.", pct: "−0.5%", impact: "pos", refs: ["NVIDIA"], sources: [{ name: "회사 보도자료", url: "#" }, { name: "Bloomberg", url: "#" }] },
+  { id: "e16", date: "2025-07-03", reflectDate: "2025-07-03", type: "product", timing: "intraday", title: "Blackwell Ultra 배포", desc: "CoreWeave와 Dell이 GB300 NVL72 기반 Blackwell Ultra 시스템의 상용 배포를 발표. 로드맵상 약속이 아닌 실제 출하가 시작되었음을 확인하며, 전환 기간 동안 수요가 공급을 앞설 것이라는 내러티브를 뒷받침했습니다.", pct: "+1.3%", impact: "pos", refs: ["CNBC"], sources: [{ name: "CNBC", url: "#" }, { name: "CoreWeave", url: "#" }] },
+  { id: "e17", date: "2025-07-15", reflectDate: "2025-07-15", type: "regulatory", timing: "intraday", title: "H20 재개 기대", desc: "NVIDIA가 H20 판매 재개를 위한 라이선스 신청 중이며, 미 정부로부터 승인이 부여될 것이라는 확약을 받았다고 발표. 장기 전면 차단에 대한 테일 리스크가 줄어들며 시장 심리가 개선되었습니다.", pct: "+4.0%", impact: "pos", refs: ["CNBC"], sources: [{ name: "CNBC", url: "#" }, { name: "Reuters", url: "#" }] },
+  { id: "e18", date: "2025-08-26", reflectDate: "2025-08-27", type: "finance", timing: "after", title: "$600억 자사주 매입", desc: "FY26 Q2 실적 발표와 함께 자사주 매입 승인액을 $600억 추가. AI 인프라 구축 기간 중에도 현금 창출이 지속 가능하다는 자신감의 시그널로, 정책 불확실성 속에서 주가 하방 지지 역할을 했습니다.", pct: "+1.1%", impact: "pos", refs: ["NVIDIA"], sources: [{ name: "회사 보도자료", url: "#" }] },
+  { id: "e19", date: "2025-08-27", reflectDate: "2025-08-28", type: "earnings", timing: "after", title: "FY26 Q2", desc: "Q2 매출 보고, 강한 분기별 성장을 이어가면서 해당 분기 중국향 H20 판매가 0이었음을 명시. 가이던스도 H20 중국 출하 미반영을 전제로 제시하여, 중국 제외 기저 수요의 강도를 부각시켰습니다.", pct: "−0.1%", impact: "pos", refs: ["NVIDIA"], sources: [{ name: "회사 보도자료", url: "#" }, { name: "CNBC", url: "#" }] },
+  { id: "e20", date: "2025-11-19", reflectDate: "2025-11-20", type: "earnings", timing: "after", title: "FY26 Q3: $570억", desc: "Q3 매출 $570억(데이터센터 $512억) 기록, Q4 가이던스 $650억±2% 제시. Blackwell이 '완판' 상태이며 클라우드 GPU 수요가 생산 능력을 초과한다고 강조. AI 인프라 구축 규모를 재차 확인하는 이벤트.", pct: "+2.9%", impact: "pos", refs: ["NVIDIA"], sources: [{ name: "회사 보도자료", url: "#" }, { name: "Bloomberg", url: "#" }] },
+  { id: "e21", date: "2025-12-31", reflectDate: "2025-12-31", type: "macro", timing: "intraday", title: "2026 중국 불확실성", desc: "로이터가 바이트댄스 등 중국 기업들의 2026년 NVIDIA 칩 대규모 구매 계획을 보도하되, H200 판매 승인 여부에 달려있다고 전달. 2025년과 동일한 핵심 변수—정책 허가가 수요의 매출 전환을 결정—가 2026년에도 지속됨을 부각.", pct: "−0.6%", impact: "neu", refs: ["Reuters"], sources: [{ name: "Reuters", url: "#" }] },
 ];
 
 // ══════════════════════════════════════════
@@ -137,7 +137,7 @@ const IMPACT_S = {
 const TONE_S = {
   bull: { bg: "rgba(34,197,94,0.04)", hi: "rgba(34,197,94,0.12)", line: "#22c55e", op: 0.5, tx: "#4ade80" },
   bear: { bg: "rgba(239,68,68,0.04)", hi: "rgba(239,68,68,0.12)", line: "#ef4444", op: 0.5, tx: "#f87171" },
-  neutral: { bg: "rgba(234,179,8,0.03)", hi: "rgba(234,179,8,0.10)", line: "#eab308", op: 0.4, tx: "#fbbf24" },
+  neutral: { bg: "rgba(148,163,184,0.03)", hi: "rgba(148,163,184,0.10)", line: "#94a3b8", op: 0.4, tx: "#94a3b8" },
 };
 
 // ══════════════════════════════════════════
@@ -146,7 +146,7 @@ const TONE_S = {
 function ChartSVG({ priceData, narratives, events, activeN, activeE, onN, onE, xLabels, chartWidth }) {
   const CW = chartWidth;
   const CH = 470;
-  const PAD = { t: 94, r: 48, b: 88, l: 8 };
+  const PAD = { t: 110, r: 48, b: 88, l: 8 };
   const plotW = CW - PAD.l - PAD.r;
   const plotH = CH - PAD.t - PAD.b;
 
@@ -211,16 +211,23 @@ function ChartSVG({ priceData, narratives, events, activeN, activeE, onN, onE, x
         const angle = Math.atan2(trendY2 - trendY1, x2 - 4 - (x1 + 4));
         const ax = x2 - 5, ay = trendY2;
 
+        const cardH = 46 + (n.bullets ? n.bullets.length * 9 : 0) + 12;
         return (
           <g key={n.id} onClick={() => onN(n.id)} style={{ cursor: "pointer" }}>
             <rect x={x1} y={PAD.t} width={bandW} height={plotH} fill={isActive ? tone.hi : tone.bg} rx="2" style={{ transition: "fill 0.2s" }} />
             <line x1={x1 + 3} y1={trendY1} x2={x2 - 3} y2={trendY2} stroke={tone.line} strokeWidth={isActive ? 2 : 1.2} opacity={isActive ? 0.7 : tone.op} strokeLinecap="round" />
             <polyline points={`${ax - 5 * Math.cos(angle - 0.4)},${ay - 5 * Math.sin(angle - 0.4)} ${ax},${ay} ${ax - 5 * Math.cos(angle + 0.4)},${ay - 5 * Math.sin(angle + 0.4)}`} fill="none" stroke={tone.line} strokeWidth={isActive ? 1.6 : 0.8} opacity={isActive ? 0.7 : tone.op} />
-            <rect x={centerX - bandW * 0.44} y={labelY - 2} width={bandW * 0.88} height={40} rx="4" fill={isActive ? "rgba(15,23,42,0.94)" : "rgba(15,23,42,0.65)"} stroke={isActive ? tone.line : "rgba(255,255,255,0.05)"} strokeWidth={isActive ? 1.2 : 0.5} />
+            <rect x={centerX - bandW * 0.44} y={labelY - 2} width={bandW * 0.88} height={cardH} rx="4" fill={isActive ? "rgba(15,23,42,0.94)" : "rgba(15,23,42,0.65)"} stroke={isActive ? tone.line : "rgba(255,255,255,0.05)"} strokeWidth={isActive ? 1.2 : 0.5} />
+            {/* Number badge */}
+            <text x={centerX - bandW * 0.35} y={labelY + 9} fill={tone.tx} fontSize="9" fontWeight="800" fontFamily="'DM Mono',monospace" opacity={isActive ? 1 : 0.5}>{idx + 1}</text>
             {labelLines.map((l, li) => (
-              <text key={li} x={centerX} y={labelY + 11 + li * 12} textAnchor="middle" fill={isActive ? "#f1f5f9" : "rgba(255,255,255,0.45)"} fontSize="9.5" fontWeight="600" fontFamily="'Pretendard',sans-serif">{l}</text>
+              <text key={li} x={centerX + 4} y={labelY + 11 + li * 12} textAnchor="middle" fill={isActive ? "#f1f5f9" : "rgba(255,255,255,0.45)"} fontSize="9.5" fontWeight="600" fontFamily="'Noto Sans KR',sans-serif">{l}</text>
             ))}
-            <text x={centerX} y={labelY + 11 + labelLines.length * 12 + 2} textAnchor="middle" fill={tone.tx} fontSize="8.5" fontWeight="700" fontFamily="'DM Mono',monospace" opacity={isActive ? 1 : 0.55}>{n.sub}</text>
+            {/* Bullets */}
+            {n.bullets && n.bullets.map((b, bi) => (
+              <text key={bi} x={centerX + 4} y={labelY + 11 + labelLines.length * 12 + 4 + bi * 9} textAnchor="middle" fill={tone.tx} fontSize="7" fontFamily="'Noto Sans KR',sans-serif" opacity={isActive ? 0.8 : 0.45}>· {b}</text>
+            ))}
+            <text x={centerX + 4} y={labelY + 11 + labelLines.length * 12 + 4 + (n.bullets ? n.bullets.length * 9 : 0) + 4} textAnchor="middle" fill={tone.tx} fontSize="8.5" fontWeight="700" fontFamily="'DM Mono',monospace" opacity={isActive ? 1 : 0.55}>{n.sub}</text>
             {idx > 0 && <line x1={x1} y1={PAD.t} x2={x1} y2={PAD.t + plotH} stroke="rgba(255,255,255,0.05)" strokeDasharray="3,4" />}
           </g>
         );
@@ -326,8 +333,17 @@ function DetailPanel({ narr, allEvents, activeE, onE, onClose }) {
                 <div style={{ marginTop: "4px" }}>
                   <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.4)", lineHeight: "1.45", margin: "0 0 3px" }}>{ev.desc}</p>
                   {isShifted && (
-                    <div style={{ fontSize: "8.5px", color: "rgba(255,255,255,0.2)", fontFamily: "'DM Mono',monospace" }}>
+                    <div style={{ fontSize: "8.5px", color: "rgba(255,255,255,0.2)", fontFamily: "'DM Mono',monospace", marginBottom: "4px" }}>
                       {TM_ICON[ev.timing]} {ev.date} {TM_SHORT[ev.timing]} 발표 → {ev.reflectDate} 반영
+                    </div>
+                  )}
+                  {ev.sources && ev.sources.length > 0 && (
+                    <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "4px" }}>
+                      {ev.sources.map((s, si) => (
+                        <a key={si} href={s.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: "8px", padding: "2px 6px", borderRadius: "3px", background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Mono',monospace", textDecoration: "none", cursor: "pointer" }}>
+                          {s.name} ↗
+                        </a>
+                      ))}
                     </div>
                   )}
                 </div>
@@ -425,8 +441,8 @@ export default function App() {
   const showPanel = !!activeNarr;
 
   return (
-    <div style={{ width: "100%", height: "100vh", background: "#080b14", color: "#e2e8f0", fontFamily: "'Pretendard',-apple-system,sans-serif", display: "flex", flexDirection: "column", overflow: "hidden" }}>
-      <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <div style={{ width: "100%", height: "100vh", background: "#080b14", color: "#e2e8f0", fontFamily: "'Noto Sans KR',-apple-system,sans-serif", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>{`*{box-sizing:border-box;margin:0}::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px}`}</style>
 
       {/* Header */}
