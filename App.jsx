@@ -1,0 +1,474 @@
+import { useState, useCallback, useMemo } from "react";
+
+// ══════════════════════════════════════════
+// PRICE DATA
+// ══════════════════════════════════════════
+const PRICE_5Y = [
+  { d: "2021-01-04", p: 13.09 }, { d: "2021-02-25", p: 13.28 }, { d: "2021-03-08", p: 11.57 },
+  { d: "2021-03-31", p: 13.32 }, { d: "2021-05-26", p: 15.67 }, { d: "2021-06-16", p: 17.77 },
+  { d: "2021-07-20", p: 18.57 }, { d: "2021-08-31", p: 22.34 }, { d: "2021-10-22", p: 22.68 },
+  { d: "2021-11-17", p: 29.21 }, { d: "2021-12-31", p: 29.36 }, { d: "2022-02-07", p: 24.68 },
+  { d: "2022-03-21", p: 26.69 }, { d: "2022-05-24", p: 16.13 }, { d: "2022-08-05", p: 18.96 },
+  { d: "2022-08-08", p: 17.77 }, { d: "2022-10-11", p: 11.57 }, { d: "2022-12-30", p: 14.6 },
+  { d: "2023-01-03", p: 14.3 }, { d: "2023-03-21", p: 26.18 }, { d: "2023-05-24", p: 30.52 },
+  { d: "2023-08-23", p: 47.09 }, { d: "2023-10-17", p: 43.91 }, { d: "2023-11-20", p: 50.38 },
+  { d: "2023-12-29", p: 49.5 }, { d: "2024-01-02", p: 48.15 }, { d: "2024-02-21", p: 67.44 },
+  { d: "2024-03-18", p: 88.42 }, { d: "2024-06-07", p: 120.84 }, { d: "2024-08-28", p: 125.57 },
+  { d: "2024-11-20", p: 145.84 }, { d: "2024-12-31", p: 134.25 }, { d: "2025-01-02", p: 138.27 },
+  { d: "2025-02-26", p: 131.24 }, { d: "2025-04-09", p: 114.31 }, { d: "2025-04-15", p: 112.18 },
+  { d: "2025-05-28", p: 134.79 }, { d: "2025-07-03", p: 159.32 }, { d: "2025-08-27", p: 181.58 },
+  { d: "2025-11-19", p: 186.51 }, { d: "2025-12-31", p: 186.5 },
+];
+const PRICE_1Y = [
+  { d: "2025-01-02", p: 138.27 }, { d: "2025-01-15", p: 133.5 }, { d: "2025-02-10", p: 128.9 },
+  { d: "2025-02-26", p: 131.24 }, { d: "2025-02-27", p: 120.12 }, { d: "2025-03-18", p: 115.41 },
+  { d: "2025-04-08", p: 96.28 }, { d: "2025-04-09", p: 114.31 }, { d: "2025-04-15", p: 112.18 },
+  { d: "2025-04-17", p: 101.47 }, { d: "2025-05-09", p: 116.63 }, { d: "2025-05-28", p: 134.79 },
+  { d: "2025-05-29", p: 139.16 }, { d: "2025-06-11", p: 142.81 }, { d: "2025-07-03", p: 159.32 },
+  { d: "2025-07-15", p: 170.68 }, { d: "2025-08-26", p: 181.75 }, { d: "2025-08-27", p: 181.58 },
+  { d: "2025-08-28", p: 180.15 }, { d: "2025-09-15", p: 182.3 }, { d: "2025-10-15", p: 184.5 },
+  { d: "2025-11-19", p: 186.51 }, { d: "2025-11-20", p: 180.63 }, { d: "2025-12-15", p: 185.2 },
+  { d: "2025-12-31", p: 186.5 },
+];
+
+// ══════════════════════════════════════════
+// NARRATIVES
+// ══════════════════════════════════════════
+const NARR_5Y = [
+  { id: "c1", s: "2021-01-04", e: "2021-03-31", sp: 13.09, ep: 13.32, label: "금리 주도\n멀티플 리셋", sub: "+1.8%", tone: "neutral", detail: "금리 상승으로 멀티플 재조정. 3월 안정세 이후 GPU 수요와 AI 성장에 재집중.", refs: ["Federal Reserve", "Nasdaq"], ev: { s: 46.9, e: 43.4, d: "−7.5%" } },
+  { id: "c2", s: "2021-04-01", e: "2021-12-31", sp: 13.78, ep: 29.36, label: "어닝 서프라이즈\n4:1 분할 랠리", sub: "+113%", tone: "bull", detail: "반복적 어닝 서프라이즈와 4:1 분할이 모멘텀 증폭. AI/데이터센터 리더십 유지.", refs: ["NVIDIA", "CNBC"], ev: { s: 43.6, e: 66.0, d: "+51.4%" } },
+  { id: "c3", s: "2022-01-01", e: "2022-10-11", sp: 30.07, ep: 11.57, label: "게이밍 하강\n수출 통제 충격", sub: "−62%", tone: "bear", detail: "Arm 무산, 게이밍 충격, 수출 통제로 중국향 GPU 구조적 부담.", refs: ["NVIDIA", "FTC", "CNBC"], ev: { s: 60.8, e: 23.7, d: "−61.0%" } },
+  { id: "c4", s: "2022-10-12", e: "2023-05-24", sp: 11.49, ep: 30.52, label: "AI 변곡점\n가이던스 쇼크", sub: "+166%", tone: "bull", detail: "5월 가이던스 쇼크로 새 밸류에이션 체제 확립. 생성형 AI 인프라 수요 중심.", refs: ["NVIDIA", "Nasdaq"], ev: { s: 23.1, e: 71.2, d: "+208%" } },
+  { id: "c5", s: "2023-05-25", e: "2023-12-31", sp: 37.96, ep: 49.5, label: "생성형 AI\ncapex 급등", sub: "+30%", tone: "bull", detail: "하이퍼스케일러 capex 단계적 변화. 풀스택 해자 강화와 폭발적 실적.", refs: ["NVIDIA", "BIS"], ev: { s: 77.1, e: 46.4, d: "−39.8%" } },
+  { id: "c6", s: "2024-01-01", e: "2024-12-31", sp: 48.15, ep: 134.25, label: "Blackwell 로드맵\n10:1 분할", sub: "+179%", tone: "bull", detail: "Beat-and-raise 분기, Blackwell 로드맵, 10:1 분할이 높은 기대감 체제 강화.", refs: ["NVIDIA", "CNBC"], ev: { s: 45.2, e: 41.9, d: "−7.3%" } },
+  { id: "c7", s: "2025-01-01", e: "2025-05-28", sp: 138.27, ep: 134.79, label: "기록적 실적 vs\nH20 수출 규제", sub: "−2.5%", tone: "neutral", detail: "기록적 실적과 H20 수출 라이선스 요구 충돌. 핵심 변수가 정책으로 이동.", refs: ["NVIDIA", "CNBC"], ev: { s: 43.2, e: 36.8, d: "−14.8%" } },
+  { id: "c8", s: "2025-05-29", e: "2025-12-31", sp: 139.16, ep: 186.5, label: "Blackwell 실행\n희소성 강세", sub: "+34%", tone: "bull", detail: "Blackwell/Ultra 배포, 기록적 분기, $600억 자사주 매입으로 실행력 강화.", refs: ["NVIDIA", "Reuters"], ev: { s: 32.9, e: 34.9, d: "+6.1%" } },
+];
+const NARR_1Y = [
+  { id: "f1", s: "2025-01-02", e: "2025-02-26", sp: 138.27, ep: 131.24, label: "Blackwell 확인 대기\n높은 기대감", sub: "−5.1%", tone: "neutral", detail: "Blackwell 생산 확대 확인 대기. Beat-and-raise 기대와 고성장 논쟁.", refs: ["NVIDIA"], ev: { s: 43.2, e: 35.7, d: "−17.3%" } },
+  { id: "f2", s: "2025-02-27", e: "2025-05-28", sp: 120.12, ep: 134.79, label: "수출 통제 충격\n정책 리스크 부상", sub: "+12.2%", tone: "neutral", detail: "H20 라이선스 요건 → 비용 발생. '수요 강력, 수출 규제로 제약'으로 재구성.", refs: ["CNBC", "NVIDIA"], ev: { s: 32.7, e: 32.9, d: "+0.7%" } },
+  { id: "f3", s: "2025-05-29", e: "2025-08-27", sp: 139.16, ep: 181.58, label: "Blackwell 배포\n완판 수요 확인", sub: "+30.5%", tone: "bull", detail: "Blackwell/Ultra 출하, 완판 수요 확인. 수정 H20과 Ultra 배포로 심리 안정.", refs: ["NVIDIA", "CNBC"], ev: { s: 34.0, e: 40.0, d: "+17.8%" } },
+  { id: "f4", s: "2025-08-28", e: "2025-11-19", sp: 180.15, ep: 186.51, label: "희소성 AI 인프라\n기록적 분기", sub: "+3.5%", tone: "bull", detail: "AI 인프라 희소성 지배. $600억 자사주 매입. Q3 실적이 구축 사이클 재확인.", refs: ["NVIDIA"], ev: { s: 39.7, e: 36.2, d: "−8.9%" } },
+  { id: "f5", s: "2025-11-20", e: "2025-12-31", sp: 180.63, ep: 186.5, label: "기록적 가이던스\n중국 리스크 공존", sub: "+3.2%", tone: "neutral", detail: "기록적 가이던스와 중국 정책 불확실성 혼재.", refs: ["NVIDIA", "Reuters"], ev: { s: 35.0, e: 36.2, d: "+3.3%" } },
+];
+
+// ══════════════════════════════════════════
+// EVENTS
+// ══════════════════════════════════════════
+const ALL_EVENTS = [
+  { id: "e1", date: "2021-02-25", reflectDate: "2021-02-25", type: "macro", timing: "intraday", title: "미 국채 금리 급등", desc: "미 10년물 국채 금리가 1.6%까지 급등하며 고평가 기술주 전반에 매도세 촉발. 금리 상승은 미래 이익의 현재가치를 낮춰 '장기 듀레이션' 성장주인 NVIDIA에 직접적 멀티플 하락 압력으로 작용했습니다.", pct: "−8.2%", impact: "neg", refs: ["Fed"] },
+  { id: "e2", date: "2021-05-25", reflectDate: "2021-05-26", type: "earnings", timing: "after", title: "FY22 Q1 서프라이즈", desc: "매출 $56.6억으로 기록 경신. 게이밍(+106% YoY)과 데이터센터(+79% YoY) 모두 강세를 보이며 가속 컴퓨팅 수요가 광범위함을 재확인. 가이던스도 시장 기대를 상회했습니다.", pct: "+0.3%", impact: "pos", refs: ["NVIDIA"] },
+  { id: "e3", date: "2021-07-20", reflectDate: "2021-07-20", type: "finance", timing: "pre", title: "4:1 분할 효력", desc: "4:1 주식 분할이 발효되어 분할 조정 기준으로 거래 시작. 기업 가치 변화 없이 주당 가격을 낮춰 개인 투자자 접근성을 확대하고, 반도체주에 대한 투자자 열기와 맞물려 모멘텀을 유지했습니다.", pct: "−0.9%", impact: "neu", refs: ["NVIDIA"] },
+  { id: "e4", date: "2022-02-07", reflectDate: "2022-02-07", type: "deal", timing: "pre", title: "Arm 인수 무산", desc: "SoftBank와의 $400억 규모 Arm 인수가 FTC 등 다국적 규제 반대로 최종 철회. 주요 전략적 M&A 경로가 사라졌으나, 시장은 불확실성 해소로 소폭 안도. $12.5억 선급금은 SoftBank가 보유.", pct: "+1.7%", impact: "neu", refs: ["NVIDIA", "FTC"] },
+  { id: "e5", date: "2022-08-05", reflectDate: "2022-08-08", type: "earnings", timing: "after", title: "FY23 Q2 실적 경고", desc: "2분기 매출을 $67억으로 잠정 발표, 기존 가이던스 $81억 대비 17% 하향. 게이밍 매출이 전분기 대비 −44% 급락하며 채널 재고 과잉과 소비 수요 공백을 확인. 단기 이익 기대치가 전면 재설정되었습니다.", pct: "−6.3%", impact: "neg", refs: ["NVIDIA"] },
+  { id: "e6", date: "2022-08-31", reflectDate: "2022-09-01", type: "regulatory", timing: "after", title: "수출 통제: A100/H100", desc: "미국 상무부가 A100/H100 등 첨단 데이터센터 GPU의 중국·러시아 수출에 라이선스 요구. NVIDIA는 해당 분기 약 $4억 매출 영향을 경고. 중국 데이터센터 시장에 대한 구조적 정책 리스크 프리미엄이 형성되었습니다.", pct: "−2.4%", impact: "neg", refs: ["CNBC"] },
+  { id: "e7", date: "2023-05-24", reflectDate: "2023-05-25", type: "earnings", timing: "after", title: "가이던스 쇼크", desc: "FY24 Q1 매출 $71.9억 보고 후, Q2 매출 가이던스를 $110억으로 제시해 컨센서스($72억)를 53% 상회. 생성형 AI가 주도하는 데이터센터 수요의 단계적 변화를 시사하며, 밸류에이션 체제 자체를 재설정한 이벤트입니다.", pct: "−0.5%", impact: "pos", refs: ["NVIDIA"] },
+  { id: "e8", date: "2023-10-17", reflectDate: "2023-10-17", type: "regulatory", timing: "pre", title: "수출 통제 강화", desc: "미 상무부 BIS가 수출 통제를 확대하여 중국향 첨단 AI 칩 제약을 강화. NVIDIA는 규제 준수 대안 제품 개발과 공급 경로 변경을 강제받았고, 단기 매출 시점에 대한 불확실성이 증가했습니다.", pct: "−4.7%", impact: "neg", refs: ["BIS"] },
+  { id: "e9", date: "2024-02-21", reflectDate: "2024-02-22", type: "earnings", timing: "after", title: "FY24 Q4 Beat-and-Raise", desc: "Q4 매출 $221억(+265% YoY)으로 기록 경신, Q1 가이던스 $240억 제시. 데이터센터 매출이 $184억으로 전체의 83%를 차지하며 'AI 수요가 공급을 초과한다'는 논지를 재확인. 멀티 쿼터 랠리의 핵심 촉매.", pct: "−2.9%", impact: "pos", refs: ["NVIDIA"] },
+  { id: "e10", date: "2024-03-18", reflectDate: "2024-03-18", type: "product", timing: "intraday", title: "Blackwell 공개", desc: "GTC 2024 키노트에서 Blackwell 아키텍처 공개. Hopper 대비 AI 학습 성능 4배, 추론 30배 향상을 제시하며 차세대 데이터센터 사이클의 리스크를 낮추고, 지속적 가격 결정력에 대한 기대를 강화했습니다.", pct: "+0.7%", impact: "pos", refs: ["NVIDIA"] },
+  { id: "e11", date: "2025-02-26", reflectDate: "2025-02-27", type: "earnings", timing: "after", title: "FY25 신기록", desc: "FY25 연간 매출 $1,305억(+114% YoY), Q4 매출 $393억 기록. 초기 Blackwell 판매가 본격화되며 추론 AI가 컴퓨팅 수요를 증가시키고 있다고 강조. 빠른 생산 확대가 강세론을 뒷받침했습니다.", pct: "+3.7%", impact: "pos", refs: ["NVIDIA"] },
+  { id: "e12", date: "2025-03-18", reflectDate: "2025-03-18", type: "product", timing: "intraday", title: "GTC: Blackwell Ultra", desc: "GTC 2025에서 Blackwell Ultra(2025 하반기 출하)를 발표하고 2026년 차세대 Vera Rubin 플랫폼을 예고. 연간 제품 출시 주기를 공식화하며 커스텀 ASIC 경쟁사 대비 로드맵 우위를 시사했습니다.", pct: "−3.4%", impact: "pos", refs: ["CNBC"] },
+  { id: "e13", date: "2025-04-09", reflectDate: "2025-04-09", type: "regulatory", timing: "intraday", title: "H20 라이선스 요구", desc: "미 정부가 H20 제품의 중국 수출에 라이선스를 요구한다고 통보. 중국 매출의 인식 시기와 규모에 대한 불확실성이 직접적으로 상승. 동시에 관세 유예 뉴스와 겹쳐 당일 주가는 시장 전반 반등과 함께 급등했습니다.", pct: "+18.7%", impact: "neg", refs: ["CNBC", "NVIDIA"] },
+  { id: "e14", date: "2025-04-15", reflectDate: "2025-04-16", type: "finance", timing: "after", title: "H20 비용 $55억", desc: "SEC 파일링을 통해 H20 수출 제한 관련 재고·구매의무 비용 $55억을 Q1에 반영할 것이라고 공시. 중국 정책의 재무적 영향이 이론이 아닌 수치로 구체화되며, 단기 마진과 매출 모델링의 핵심 변수가 되었습니다.", pct: "+1.4%", impact: "neg", refs: ["CNBC"] },
+  { id: "e15", date: "2025-05-28", reflectDate: "2025-05-29", type: "earnings", timing: "after", title: "FY26 Q1: H20 비용 반영", desc: "Q1 매출 $442억(+69% YoY) 보고, H20 관련 $45억 비용 반영. 가이던스에서 중국향 H20 출하를 0으로 가정하여 투자자에게 기본 시나리오 모델을 명확히 제시. 기저 수요는 강력함을 재확인했습니다.", pct: "−0.5%", impact: "pos", refs: ["NVIDIA"] },
+  { id: "e16", date: "2025-07-03", reflectDate: "2025-07-03", type: "product", timing: "intraday", title: "Blackwell Ultra 배포", desc: "CoreWeave와 Dell이 GB300 NVL72 기반 Blackwell Ultra 시스템의 상용 배포를 발표. 로드맵상 약속이 아닌 실제 출하가 시작되었음을 확인하며, 전환 기간 동안 수요가 공급을 앞설 것이라는 내러티브를 뒷받침했습니다.", pct: "+1.3%", impact: "pos", refs: ["CNBC"] },
+  { id: "e17", date: "2025-07-15", reflectDate: "2025-07-15", type: "regulatory", timing: "intraday", title: "H20 재개 기대", desc: "NVIDIA가 H20 판매 재개를 위한 라이선스 신청 중이며, 미 정부로부터 승인이 부여될 것이라는 확약을 받았다고 발표. 장기 전면 차단에 대한 테일 리스크가 줄어들며 시장 심리가 개선되었습니다.", pct: "+4.0%", impact: "pos", refs: ["CNBC"] },
+  { id: "e18", date: "2025-08-26", reflectDate: "2025-08-27", type: "finance", timing: "after", title: "$600억 자사주 매입", desc: "FY26 Q2 실적 발표와 함께 자사주 매입 승인액을 $600억 추가. AI 인프라 구축 기간 중에도 현금 창출이 지속 가능하다는 자신감의 시그널로, 정책 불확실성 속에서 주가 하방 지지 역할을 했습니다.", pct: "+1.1%", impact: "pos", refs: ["NVIDIA"] },
+  { id: "e19", date: "2025-08-27", reflectDate: "2025-08-28", type: "earnings", timing: "after", title: "FY26 Q2", desc: "Q2 매출 보고, 강한 분기별 성장을 이어가면서 해당 분기 중국향 H20 판매가 0이었음을 명시. 가이던스도 H20 중국 출하 미반영을 전제로 제시하여, 중국 제외 기저 수요의 강도를 부각시켰습니다.", pct: "−0.1%", impact: "pos", refs: ["NVIDIA"] },
+  { id: "e20", date: "2025-11-19", reflectDate: "2025-11-20", type: "earnings", timing: "after", title: "FY26 Q3: $570억", desc: "Q3 매출 $570억(데이터센터 $512억) 기록, Q4 가이던스 $650억±2% 제시. Blackwell이 '완판' 상태이며 클라우드 GPU 수요가 생산 능력을 초과한다고 강조. AI 인프라 구축 규모를 재차 확인하는 이벤트.", pct: "+2.9%", impact: "pos", refs: ["NVIDIA"] },
+  { id: "e21", date: "2025-12-31", reflectDate: "2025-12-31", type: "macro", timing: "intraday", title: "2026 중국 불확실성", desc: "로이터가 바이트댄스 등 중국 기업들의 2026년 NVIDIA 칩 대규모 구매 계획을 보도하되, H200 판매 승인 여부에 달려있다고 전달. 2025년과 동일한 핵심 변수—정책 허가가 수요의 매출 전환을 결정—가 2026년에도 지속됨을 부각.", pct: "−0.6%", impact: "neu", refs: ["Reuters"] },
+];
+
+// ══════════════════════════════════════════
+// SCENARIOS
+// ══════════════════════════════════════════
+const SCENARIOS = {
+  bull: {
+    label: "Bull", range: "$350 ~ $433", hi: 433, lo: 350, mid: 391, pct: "+140%",
+    color: "#22c55e", bg: "rgba(34,197,94,0.08)",
+    conditions: [
+      { bold: "AI capex 사이클 8-10년 지속", text: "미국 기업 3%만 AI 도입, 침투율 초입" },
+      { bold: "Blackwell/Rubin 수주 $500B 유지", text: "칩당 수요 12배 공급 부족 FY27까지" },
+      { bold: "매출 $323B+ 달성", text: "FY27 컨센서스, YoY +50%+" },
+      { bold: "ASIC 위협 제한적", text: "TPU/Trainium이 보완하지 대체 못함" },
+      { bold: "TSMC CoWoS 병목 해소", text: "출하량 증가" },
+      { bold: "중국 시장 재진입", text: "수출 규제 완화로 매출 회복" },
+    ],
+  },
+  base: {
+    label: "Base", range: "$262", hi: 262, lo: 262, mid: 262, pct: "+45%",
+    color: "#f59e0b", bg: "rgba(245,158,11,0.06)",
+    conditions: [
+      { bold: "매출 성장 둔화하되 강함", text: "YoY +30-40%, 기대치 부합" },
+      { bold: "EPS 성장으로 멀티플 흡수", text: "P/E 40-50x → 이익 성장만큼 상승" },
+      { bold: "데이터센터 외 확장 초기", text: "자율주행, 로봇, 게이밍은 옵셔널리티" },
+      { bold: "경쟁 심화 but 지배적 점유율", text: "CUDA 생태계 lock-in 건재" },
+      { bold: "LTG 39%, P/E ~45x 적용", text: "" },
+    ],
+  },
+  bear: {
+    label: "Bear", range: "$100 ~ $138", hi: 138, lo: 100, mid: 119, pct: "−23%",
+    color: "#ef4444", bg: "rgba(239,68,68,0.06)",
+    conditions: [
+      { bold: "Circular Deals 문제", text: "NVDA 투자 스타트업이 칩 구매 → 부풀려진 매출" },
+      { bold: "하이퍼스케일러 자체칩 전환", text: "TPU, Trainium, MTIA, Maia: 고객=경쟁자" },
+      { bold: "AI capex 2026 피크 후 감속", text: "매출 정체" },
+      { bold: "TSMC 최대 가동", text: "추가 성장 여력 제한" },
+      { bold: "중국 매출 영구 차단", text: "지정학 불확실성" },
+      { bold: "밸류에이션 정상화", text: "EV/EBITDA 35x → 역사적 15-20x 수렴" },
+    ],
+  },
+};
+
+// ══════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════
+const TYPE_COLOR = { macro: "#eab308", earnings: "#3b82f6", finance: "#a78bfa", deal: "#818cf8", regulatory: "#f87171", product: "#34d399", other: "#6b7280" };
+const TYPE_LABEL = { macro: "Macro", earnings: "Earnings", finance: "Corporate", deal: "Corporate", regulatory: "Macro", product: "Corporate", other: "Other" };
+const TM_LABEL = { pre: "장 전", intraday: "장 중", after: "장 후" };
+const TM_SHORT = { pre: "Pre-market ET", intraday: "Regular hours ET", after: "After-hours ET" };
+const TM_ICON = { pre: "🌅", intraday: "☀️", after: "🌙" };
+const TM_COLOR = { pre: "#fbbf24", intraday: "#f97316", after: "#818cf8" };
+const IMPACT_S = {
+  pos: { bg: "rgba(34,197,94,0.06)", bd: "#166534", tx: "#4ade80", dot: "#22c55e" },
+  neg: { bg: "rgba(239,68,68,0.06)", bd: "#7f1d1d", tx: "#f87171", dot: "#ef4444" },
+  neu: { bg: "rgba(148,163,184,0.05)", bd: "#334155", tx: "#94a3b8", dot: "#64748b" },
+};
+const TONE_S = {
+  bull: { bg: "rgba(34,197,94,0.04)", hi: "rgba(34,197,94,0.12)", line: "#22c55e", op: 0.5, tx: "#4ade80" },
+  bear: { bg: "rgba(239,68,68,0.04)", hi: "rgba(239,68,68,0.12)", line: "#ef4444", op: 0.5, tx: "#f87171" },
+  neutral: { bg: "rgba(234,179,8,0.03)", hi: "rgba(234,179,8,0.10)", line: "#eab308", op: 0.4, tx: "#fbbf24" },
+};
+
+// ══════════════════════════════════════════
+// CHART SVG with projection fan
+// ══════════════════════════════════════════
+function ChartSVG({ priceData, narratives, events, activeN, activeE, onN, onE, xLabels, chartWidth }) {
+  const CW = chartWidth;
+  const CH = 470;
+  const PAD = { t: 94, r: 48, b: 88, l: 8 };
+  const plotW = CW - PAD.l - PAD.r;
+  const plotH = CH - PAD.t - PAD.b;
+
+  const lastPrice = priceData[priceData.length - 1].p;
+
+  const allPrices = priceData.map((d) => d.p);
+  const minPrice = Math.floor(Math.min(...allPrices) / 10) * 10;
+  const maxPrice = Math.ceil(Math.max(...allPrices) / 10) * 10 + 10;
+  const tsStart = new Date(priceData[0].d).getTime();
+  const tsEnd = new Date(priceData[priceData.length - 1].d).getTime();
+
+  const toX = (dateStr) => PAD.l + ((new Date(dateStr).getTime() - tsStart) / (tsEnd - tsStart)) * plotW;
+  const toY = (price) => PAD.t + plotH - ((price - minPrice) / (maxPrice - minPrice)) * plotH;
+
+  const priceLine = priceData.map((d, i) => `${i === 0 ? "M" : "L"}${toX(d.d)},${toY(d.p)}`).join(" ");
+  const lastPt = priceData[priceData.length - 1];
+  const areaPath = priceLine + ` L${toX(lastPt.d)},${PAD.t + plotH} L${toX(priceData[0].d)},${PAD.t + plotH} Z`;
+
+  const yTicks = [];
+  const yStep = maxPrice - minPrice > 200 ? 50 : maxPrice - minPrice > 100 ? 20 : 10;
+  for (let p = minPrice; p <= maxPrice; p += yStep) yTicks.push(p);
+
+  const eventDotY = PAD.t + plotH + 40;
+
+  return (
+    <svg viewBox={`0 0 ${CW} ${CH}`} style={{ width: "100%", height: "auto", display: "block" }}>
+      <defs>
+        <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.07" />
+          <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.005" />
+        </linearGradient>
+      </defs>
+
+      {/* Y grid */}
+      {yTicks.map((p) => (
+        <g key={p}>
+          <line x1={PAD.l} y1={toY(p)} x2={CW - PAD.r} y2={toY(p)} stroke="rgba(255,255,255,0.035)" strokeDasharray="2,4" />
+          <text x={CW - PAD.r + 4} y={toY(p) + 3} fill="rgba(255,255,255,0.18)" fontSize="8.5" fontFamily="'DM Mono',monospace">{"$" + p}</text>
+        </g>
+      ))}
+
+      {/* X labels */}
+      {xLabels.map((xl) => {
+        const ts = new Date(xl.d).getTime();
+        if (ts < tsStart || ts > tsEnd) return null;
+        return <text key={xl.d} x={toX(xl.d)} y={PAD.t + plotH + 14} fill="rgba(255,255,255,0.18)" fontSize="8.5" textAnchor="middle" fontFamily="'DM Mono',monospace">{xl.label}</text>;
+      })}
+      <line x1={PAD.l} y1={PAD.t + plotH + 1} x2={CW - PAD.r} y2={PAD.t + plotH + 1} stroke="rgba(255,255,255,0.05)" />
+
+      {/* Narrative bands */}
+      {narratives.map((n, idx) => {
+        const tone = TONE_S[n.tone];
+        const isActive = n.id === activeN;
+        const x1 = Math.max(PAD.l, toX(n.s));
+        const x2 = Math.min(CW - PAD.r, toX(n.e));
+        const bandW = x2 - x1;
+        const trendY1 = toY(n.sp) - 30;
+        const trendY2 = toY(n.ep) - 30;
+        const centerX = x1 + bandW / 2;
+        const labelY = 12;
+        const labelLines = n.label.split("\n");
+        const angle = Math.atan2(trendY2 - trendY1, x2 - 4 - (x1 + 4));
+        const ax = x2 - 5, ay = trendY2;
+
+        return (
+          <g key={n.id} onClick={() => onN(n.id)} style={{ cursor: "pointer" }}>
+            <rect x={x1} y={PAD.t} width={bandW} height={plotH} fill={isActive ? tone.hi : tone.bg} rx="2" style={{ transition: "fill 0.2s" }} />
+            <line x1={x1 + 3} y1={trendY1} x2={x2 - 3} y2={trendY2} stroke={tone.line} strokeWidth={isActive ? 2 : 1.2} opacity={isActive ? 0.7 : tone.op} strokeLinecap="round" />
+            <polyline points={`${ax - 5 * Math.cos(angle - 0.4)},${ay - 5 * Math.sin(angle - 0.4)} ${ax},${ay} ${ax - 5 * Math.cos(angle + 0.4)},${ay - 5 * Math.sin(angle + 0.4)}`} fill="none" stroke={tone.line} strokeWidth={isActive ? 1.6 : 0.8} opacity={isActive ? 0.7 : tone.op} />
+            <rect x={centerX - bandW * 0.44} y={labelY - 2} width={bandW * 0.88} height={40} rx="4" fill={isActive ? "rgba(15,23,42,0.94)" : "rgba(15,23,42,0.65)"} stroke={isActive ? tone.line : "rgba(255,255,255,0.05)"} strokeWidth={isActive ? 1.2 : 0.5} />
+            {labelLines.map((l, li) => (
+              <text key={li} x={centerX} y={labelY + 11 + li * 12} textAnchor="middle" fill={isActive ? "#f1f5f9" : "rgba(255,255,255,0.45)"} fontSize="9.5" fontWeight="600" fontFamily="'Pretendard',sans-serif">{l}</text>
+            ))}
+            <text x={centerX} y={labelY + 11 + labelLines.length * 12 + 2} textAnchor="middle" fill={tone.tx} fontSize="8.5" fontWeight="700" fontFamily="'DM Mono',monospace" opacity={isActive ? 1 : 0.55}>{n.sub}</text>
+            {idx > 0 && <line x1={x1} y1={PAD.t} x2={x1} y2={PAD.t + plotH} stroke="rgba(255,255,255,0.05)" strokeDasharray="3,4" />}
+          </g>
+        );
+      })}
+
+      {/* Price area + line */}
+      <path d={areaPath} fill="url(#areaGrad)" />
+      <path d={priceLine} fill="none" stroke="#60a5fa" strokeWidth="1.4" />
+
+      {/* Event dots — positioned at reflectDate (price impact date) */}
+      {events.map((ev) => {
+        const cx = toX(ev.reflectDate);
+        if (cx > CW - PAD.r) return null;
+        const imp = IMPACT_S[ev.impact];
+        const isA = ev.id === activeE;
+        return (
+          <g key={ev.id} onClick={(e) => { e.stopPropagation(); onE(ev.id); }} style={{ cursor: "pointer" }}>
+            <line x1={cx} y1={PAD.t + plotH + 1} x2={cx} y2={eventDotY - 6} stroke={isA ? imp.dot : "rgba(255,255,255,0.05)"} strokeWidth={isA ? 1 : 0.4} />
+            {isA && <line x1={cx} y1={PAD.t} x2={cx} y2={PAD.t + plotH} stroke={imp.dot} strokeWidth="1.5" strokeDasharray="4,3" opacity="0.3" />}
+            {isA && <circle cx={cx} cy={eventDotY} r="11" fill="none" stroke={imp.dot} strokeWidth="1" opacity="0.2"><animate attributeName="r" from="5" to="14" dur="1.4s" repeatCount="indefinite" /><animate attributeName="opacity" from="0.3" to="0" dur="1.4s" repeatCount="indefinite" /></circle>}
+            <circle cx={cx} cy={eventDotY} r={isA ? 4.5 : 3} fill={isA ? imp.dot : "#0a0e18"} stroke={imp.dot} strokeWidth="1.2" />
+            <text x={cx} y={eventDotY + 13} textAnchor="middle" fill={isA ? imp.tx : "rgba(255,255,255,0.13)"} fontSize="7" fontFamily="'DM Mono',monospace">{ev.reflectDate.slice(5)}</text>
+          </g>
+        );
+      })}
+
+      {/* Last price */}
+      {(() => {
+        const lx = toX(priceData[priceData.length - 1].d);
+        const ly = toY(lastPrice);
+        return <>
+          <circle cx={lx} cy={ly} r="3.5" fill="#3b82f6" />
+          <rect x={lx - 2} y={ly - 9} width="50" height="17" rx="3" fill="#3b82f6" />
+          <text x={lx + 4} y={ly + 2.5} fill="#fff" fontSize="9.5" fontWeight="700" fontFamily="'DM Mono',monospace">{"$" + lastPrice}</text>
+        </>;
+      })()}
+    </svg>
+  );
+}
+
+// ══════════════════════════════════════════
+// DETAIL PANEL (narrative)
+// ══════════════════════════════════════════
+function DetailPanel({ narr, allEvents, activeE, onE, onClose }) {
+  const tone = TONE_S[narr.tone];
+  const s = new Date(narr.s).getTime(), e = new Date(narr.e).getTime();
+  const filtered = allEvents.filter((ev) => { const t = new Date(ev.date).getTime(); return t >= s && t <= e; });
+  const isNeg = narr.sub.startsWith("−") || narr.sub.startsWith("-");
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: "100%", background: "#0c1020", borderLeft: "1px solid rgba(255,255,255,0.06)" }}>
+      <div style={{ padding: "14px 14px 12px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
+          <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "4px", background: tone.hi, color: tone.tx, fontWeight: "600", fontFamily: "'DM Mono',monospace" }}>{narr.label.replace("\n", " · ")}</span>
+          <button onClick={onClose} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.3)", fontSize: "16px", cursor: "pointer", padding: "2px 6px", lineHeight: 1 }}>✕</button>
+        </div>
+        <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Mono',monospace", marginBottom: "4px" }}>{narr.s} → {narr.e}</div>
+        <div style={{ fontSize: "20px", fontWeight: "800", color: isNeg ? "#f87171" : "#4ade80", fontFamily: "'DM Mono',monospace", marginBottom: "8px" }}>{narr.sub}</div>
+        {/* EV/EBITDA multiple change */}
+        {narr.ev && (
+          <div style={{ display: "flex", gap: "10px", marginBottom: "10px", padding: "8px 10px", background: "rgba(255,255,255,0.03)", borderRadius: "6px" }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: "8px", color: "rgba(255,255,255,0.3)", marginBottom: "2px", fontFamily: "'DM Mono',monospace" }}>EV/EBITDA</div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
+                <span style={{ fontSize: "13px", fontWeight: "700", color: "rgba(255,255,255,0.6)", fontFamily: "'DM Mono',monospace" }}>{narr.ev.s}x</span>
+                <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)" }}>→</span>
+                <span style={{ fontSize: "13px", fontWeight: "700", color: "rgba(255,255,255,0.6)", fontFamily: "'DM Mono',monospace" }}>{narr.ev.e}x</span>
+              </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", justifyContent: "center" }}>
+              <div style={{ fontSize: "8px", color: "rgba(255,255,255,0.3)", marginBottom: "2px", fontFamily: "'DM Mono',monospace" }}>멀티플 변화</div>
+              <span style={{ fontSize: "13px", fontWeight: "800", color: narr.ev.d.startsWith("−") || narr.ev.d.startsWith("-") ? "#f87171" : "#4ade80", fontFamily: "'DM Mono',monospace" }}>{narr.ev.d}</span>
+            </div>
+          </div>
+        )}
+        <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.5)", lineHeight: "1.6", margin: 0 }}>{narr.detail}</p>
+        <div style={{ display: "flex", gap: "5px", marginTop: "8px", flexWrap: "wrap" }}>
+          {narr.refs.map((r) => <span key={r} style={{ fontSize: "8px", padding: "2px 6px", borderRadius: "3px", background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Mono',monospace" }}>{r} ↗</span>)}
+        </div>
+      </div>
+      <div style={{ padding: "8px 12px 4px", flexShrink: 0, fontSize: "10px", fontWeight: "700", color: "rgba(255,255,255,0.4)" }}>관련 이벤트 {filtered.length}건</div>
+      <div style={{ flex: 1, overflowY: "auto", padding: "0 8px 12px" }}>
+        {filtered.length === 0 && <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.2)", padding: "12px", textAlign: "center" }}>기록된 이벤트 없음</div>}
+        {filtered.map((ev) => {
+          const isA = ev.id === activeE;
+          const imp = IMPACT_S[ev.impact];
+          const tc = TYPE_COLOR[ev.type] || "#6b7280";
+          const catLabel = TYPE_LABEL[ev.type] || "Other";
+          const isShifted = ev.date !== ev.reflectDate;
+          return (
+            <div key={ev.id} onClick={() => onE(ev.id)} style={{ padding: "7px 8px", marginBottom: "1px", borderRadius: "4px", cursor: "pointer", background: isA ? imp.bg : "transparent", borderLeft: isA ? `2px solid ${imp.dot}` : "2px solid transparent" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "2px", flexWrap: "wrap" }}>
+                <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: imp.dot, flexShrink: 0 }} />
+                <span style={{ fontSize: "8px", padding: "1px 4px", borderRadius: "2px", background: tc + "15", color: tc, fontFamily: "'DM Mono',monospace", fontWeight: "500" }}>{catLabel}</span>
+                <span style={{ fontSize: "8px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Mono',monospace" }}>{ev.reflectDate}</span>
+                {isShifted && (
+                  <span title={`실제 발표: ${ev.date} ${TM_SHORT[ev.timing]}\n차트 반영: ${ev.reflectDate}`} style={{ fontSize: "8px", width: "13px", height: "13px", borderRadius: "50%", background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.3)", display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "help", fontFamily: "'DM Mono',monospace" }}>?</span>
+                )}
+                <span style={{ marginLeft: "auto", fontSize: "9px", fontWeight: "700", color: imp.tx, fontFamily: "'DM Mono',monospace" }}>{ev.pct}</span>
+              </div>
+              <div style={{ fontSize: "11px", fontWeight: "600", color: isA ? "#f1f5f9" : "rgba(255,255,255,0.5)" }}>{ev.title}</div>
+              {isA && (
+                <div style={{ marginTop: "4px" }}>
+                  <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.4)", lineHeight: "1.45", margin: "0 0 3px" }}>{ev.desc}</p>
+                  {isShifted && (
+                    <div style={{ fontSize: "8.5px", color: "rgba(255,255,255,0.2)", fontFamily: "'DM Mono',monospace" }}>
+                      {TM_ICON[ev.timing]} {ev.date} {TM_SHORT[ev.timing]} 발표 → {ev.reflectDate} 반영
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      {/* Legend footer */}
+      <div style={{ padding: "10px 12px", borderTop: "1px solid rgba(255,255,255,0.04)", flexShrink: 0 }}>
+        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "6px" }}>
+          <span style={{ fontSize: "8px", color: "#3b82f6", fontFamily: "'DM Mono',monospace" }}>● Earnings</span>
+          <span style={{ fontSize: "8px", color: "#a78bfa", fontFamily: "'DM Mono',monospace" }}>● Corporate</span>
+          <span style={{ fontSize: "8px", color: "#eab308", fontFamily: "'DM Mono',monospace" }}>● Macro</span>
+          <span style={{ fontSize: "8px", color: "#6b7280", fontFamily: "'DM Mono',monospace" }}>● Other</span>
+        </div>
+        <div style={{ fontSize: "7.5px", color: "rgba(255,255,255,0.12)", lineHeight: "1.4" }}>
+          * 미국 동부시간(ET) 기준; 장 후 발표(🌙) 이벤트는 다음 거래일 반영
+        </div>
+      </div>
+    </div>
+  );
+}
+function ScenarioBar({ activeScenario, onSwitch }) {
+  const sc = SCENARIOS[activeScenario];
+  return (
+    <div style={{ padding: "8px 16px 10px", borderTop: "1px solid rgba(255,255,255,0.06)", flexShrink: 0 }}>
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: "3px", marginBottom: "8px" }}>
+        {Object.entries(SCENARIOS).map(([key, s]) => (
+          <button key={key} onClick={() => onSwitch(key)} style={{
+            padding: "4px 14px", border: "none", borderRadius: "4px", cursor: "pointer",
+            fontSize: "10px", fontWeight: "700", fontFamily: "'DM Mono',monospace",
+            background: activeScenario === key ? s.bg : "rgba(255,255,255,0.03)",
+            color: activeScenario === key ? s.color : "rgba(255,255,255,0.25)",
+            borderBottom: activeScenario === key ? `2px solid ${s.color}` : "2px solid transparent",
+            transition: "all 0.2s",
+          }}>{s.label} {s.range}</button>
+        ))}
+      </div>
+      {/* Conditions */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3px 16px" }}>
+        {sc.conditions.map((c, i) => (
+          <div key={i} style={{ display: "flex", gap: "5px", alignItems: "flex-start" }}>
+            <span style={{ width: "4px", height: "4px", borderRadius: "50%", background: sc.color, marginTop: "5px", flexShrink: 0, opacity: 0.6 }} />
+            <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.45)", lineHeight: "1.45" }}>
+              <span style={{ fontWeight: "600", color: "rgba(255,255,255,0.7)" }}>{c.bold}</span>
+              {c.text && <span> — {c.text}</span>}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════
+// MAIN APP
+// ══════════════════════════════════════════
+export default function App() {
+  const [view, setView] = useState("5Y");
+  const [activeN, setActiveN] = useState(null);
+  const [activeE, setActiveE] = useState(null);
+
+  const priceData = view === "5Y" ? PRICE_5Y : PRICE_1Y;
+  const narratives = view === "5Y" ? NARR_5Y : NARR_1Y;
+  const filteredEvents = useMemo(() => {
+    const s = new Date(priceData[0].d).getTime(), e = new Date(priceData[priceData.length - 1].d).getTime();
+    return ALL_EVENTS.filter((ev) => { const t = new Date(ev.date).getTime(); return t >= s && t <= e; });
+  }, [priceData]);
+
+  const xLabels = view === "5Y"
+    ? [2021, 2022, 2023, 2024, 2025, 2026].map((y) => ({ d: y + "-01-01", label: String(y) }))
+    : ["2025-01", "2025-03", "2025-05", "2025-07", "2025-09", "2025-11", "2026-01"].map((m) => ({ d: m + "-01", label: m.slice(2) }));
+
+  const handleNarr = useCallback((id) => { setActiveN((p) => (p === id ? null : id)); setActiveE(null); }, []);
+  const handleEvent = useCallback((id) => {
+    setActiveE((p) => {
+      const newId = p === id ? null : id;
+      if (newId) {
+        // Find which narrative this event belongs to and open it
+        const ev = ALL_EVENTS.find((e) => e.id === newId);
+        if (ev) {
+          const t = new Date(ev.date).getTime();
+          const narr = narratives.find((n) => t >= new Date(n.s).getTime() && t <= new Date(n.e).getTime());
+          if (narr) setActiveN(narr.id);
+        }
+      }
+      return newId;
+    });
+  }, [narratives]);
+  const switchView = (v) => { setView(v); setActiveN(null); setActiveE(null); };
+
+  const activeNarr = narratives.find((n) => n.id === activeN);
+  const showPanel = !!activeNarr;
+
+  return (
+    <div style={{ width: "100%", height: "100vh", background: "#080b14", color: "#e2e8f0", fontFamily: "'Pretendard',-apple-system,sans-serif", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+      <style>{`*{box-sizing:border-box;margin:0}::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px}`}</style>
+
+      {/* Header */}
+      <div style={{ padding: "10px 20px 6px", display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+        <span style={{ fontSize: "16px", fontWeight: "800", color: "#f8fafc", letterSpacing: "-0.03em" }}>NVDA</span>
+        <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.2)" }}>NVIDIA · 주가 맥락 + 전망</span>
+        <div style={{ marginLeft: "auto", display: "flex", gap: "2px", background: "rgba(255,255,255,0.04)", borderRadius: "5px", padding: "2px" }}>
+          {[{ key: "1Y", label: "단기(1Y)" }, { key: "5Y", label: "장기(5Y)" }].map((v) => (
+            <button key={v.key} onClick={() => switchView(v.key)} style={{ padding: "3px 12px", border: "none", borderRadius: "3px", cursor: "pointer", fontSize: "10px", fontWeight: "600", fontFamily: "'DM Mono',monospace", background: view === v.key ? "rgba(96,165,250,0.2)" : "transparent", color: view === v.key ? "#93c5fd" : "rgba(255,255,255,0.25)", transition: "all 0.2s" }}>{v.label}</button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ padding: "0 20px 2px", fontSize: "9px", color: "rgba(255,255,255,0.15)", fontFamily: "'DM Mono',monospace", flexShrink: 0 }}>
+        {view === "5Y" ? "2021–2025 · coarse" : "2025 · fine"} · 내러티브 {narratives.length} · 이벤트 {filteredEvents.length}
+      </div>
+
+      {/* Main */}
+      <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+        <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+          {/* Chart */}
+          <div style={{ padding: "0 8px", flexShrink: 0 }}>
+            <ChartSVG priceData={priceData} narratives={narratives} events={filteredEvents} activeN={activeN} activeE={activeE} onN={handleNarr} onE={handleEvent} xLabels={xLabels} chartWidth={showPanel ? 660 : 960} />
+          </div>
+
+          {/* Timing disclaimer */}
+          <div style={{ padding: "6px 16px 10px", flexShrink: 0 }}>
+            <div style={{ fontSize: "8.5px", color: "rgba(255,255,255,0.15)", fontFamily: "'DM Mono',monospace", lineHeight: "1.5" }}>
+              이벤트 시점 기준: 미국 동부시간(ET) · 🌅 장 전 4:00–9:30 AM · ☀️ 장 중 9:30 AM–4:00 PM · 🌙 장 후 4:00–8:00 PM
+              <br />
+              장 후 발표 이벤트(🌙)는 다음 거래일 주가에 반영되며, 차트 마커는 반영일 기준으로 표시됩니다.
+            </div>
+          </div>
+        </div>
+
+        {/* Narrative detail panel */}
+        {showPanel && (
+          <div style={{ width: "320px", flexShrink: 0 }}>
+            <DetailPanel narr={activeNarr} allEvents={filteredEvents} activeE={activeE} onE={handleEvent} onClose={() => setActiveN(null)} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
