@@ -416,43 +416,69 @@ function DetailPanel({ narr, allEvents, activeE, onE, onClose }) {
       <div style={{ padding: "8px 12px 4px", flexShrink: 0, fontSize: "10px", fontWeight: "700", color: "rgba(255,255,255,0.4)" }}>관련 이벤트 {filtered.length}건</div>
       <div style={{ flex: 1, overflowY: "auto", padding: "0 8px 12px" }}>
         {filtered.length === 0 && <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.2)", padding: "12px", textAlign: "center" }}>기록된 이벤트 없음</div>}
-        {filtered.map((ev) => {
+        {/* Timeline: sorted by date ascending */}
+        {[...filtered].sort((a, b) => new Date(a.date) - new Date(b.date)).map((ev, idx, arr) => {
           const isA = ev.id === activeE;
           const imp = IMPACT_S[ev.impact];
           const tc = TYPE_COLOR[ev.type] || "#6b7280";
           const catLabel = TYPE_LABEL[ev.type] || "Other";
           const isShifted = ev.date !== ev.reflectDate;
+          const isLast = idx === arr.length - 1;
           return (
-            <div key={ev.id} onClick={() => onE(ev.id)} style={{ padding: "7px 8px", marginBottom: "1px", borderRadius: "4px", cursor: "pointer", background: isA ? imp.bg : "transparent", borderLeft: isA ? `2px solid ${imp.dot}` : "2px solid transparent" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "2px", flexWrap: "wrap" }}>
-                <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: imp.dot, flexShrink: 0 }} />
-                <span style={{ fontSize: "8px", padding: "1px 4px", borderRadius: "2px", background: tc + "15", color: tc, fontFamily: "'DM Mono',monospace", fontWeight: "500" }}>{catLabel}</span>
-                <span style={{ fontSize: "8px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Mono',monospace" }}>{ev.reflectDate}</span>
-                {isShifted && (
-                  <span title={`실제 발표: ${ev.date} ${TM_SHORT[ev.timing]}\n차트 반영: ${ev.reflectDate}`} style={{ fontSize: "8px", width: "13px", height: "13px", borderRadius: "50%", background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.3)", display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "help", fontFamily: "'DM Mono',monospace" }}>?</span>
-                )}
-                <span style={{ marginLeft: "auto", fontSize: "9px", fontWeight: "700", color: imp.tx, fontFamily: "'DM Mono',monospace" }}>{ev.pct}</span>
+            <div key={ev.id} onClick={() => onE(ev.id)} style={{ display: "flex", gap: "0", cursor: "pointer", position: "relative" }}>
+              {/* Timeline rail */}
+              <div style={{ width: "28px", display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, position: "relative" }}>
+                {/* Vertical line above dot */}
+                {idx > 0 && <div style={{ width: "1.5px", height: "8px", background: "rgba(255,255,255,0.08)" }} />}
+                {idx === 0 && <div style={{ height: "8px" }} />}
+                {/* Dot */}
+                <div style={{
+                  width: isA ? "10px" : "7px", height: isA ? "10px" : "7px", borderRadius: "50%",
+                  background: isA ? imp.dot : "transparent",
+                  border: `2px solid ${isA ? imp.dot : "rgba(255,255,255,0.15)"}`,
+                  flexShrink: 0, transition: "all 0.2s", zIndex: 1,
+                }} />
+                {/* Vertical line below dot */}
+                {!isLast && <div style={{ width: "1.5px", flex: 1, background: "rgba(255,255,255,0.08)" }} />}
               </div>
-              <div style={{ fontSize: "11px", fontWeight: "600", color: isA ? "#f1f5f9" : "rgba(255,255,255,0.5)" }}>{ev.title}</div>
-              {isA && (
-                <div style={{ marginTop: "4px" }}>
-                  <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.4)", lineHeight: "1.45", margin: "0 0 3px" }}>{ev.desc}</p>
+              {/* Content */}
+              <div style={{
+                flex: 1, padding: "4px 8px 10px 4px", borderRadius: "4px",
+                background: isA ? imp.bg : "transparent",
+                transition: "all 0.15s",
+              }}>
+                {/* Date + category + pct */}
+                <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "2px", flexWrap: "wrap" }}>
+                  <span style={{ fontSize: "9px", color: isA ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.25)", fontFamily: "'DM Mono',monospace", fontWeight: "600" }}>{ev.reflectDate.slice(5)}</span>
                   {isShifted && (
-                    <div style={{ fontSize: "8.5px", color: "rgba(255,255,255,0.2)", fontFamily: "'DM Mono',monospace", marginBottom: "4px" }}>
-                      {TM_ICON[ev.timing]} {ev.date} {TM_SHORT[ev.timing]} 발표 → {ev.reflectDate} 반영
-                    </div>
+                    <span title={`실제 발표: ${ev.date} ${TM_SHORT[ev.timing]}\n차트 반영: ${ev.reflectDate}`} style={{ fontSize: "7px", width: "12px", height: "12px", borderRadius: "50%", background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.25)", display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "help", fontFamily: "'DM Mono',monospace" }}>?</span>
                   )}
-                  {ev.sources && ev.sources.length > 0 && (
-                    <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "4px" }}>
-                      {ev.sources.map((s, si) => (
-                        <a key={si} href={s.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: "8px", padding: "2px 6px", borderRadius: "3px", background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Mono',monospace", textDecoration: "none", cursor: "pointer" }}>
-                          {s.name} ↗
-                        </a>
-                      ))}
-                    </div>
-                  )}
+                  <span style={{ fontSize: "7.5px", padding: "1px 4px", borderRadius: "2px", background: tc + "15", color: tc, fontFamily: "'DM Mono',monospace", fontWeight: "500" }}>{catLabel}</span>
+                  <span style={{ marginLeft: "auto", fontSize: "9px", fontWeight: "700", color: imp.tx, fontFamily: "'DM Mono',monospace" }}>{ev.pct}</span>
                 </div>
-              )}
+                {/* Title */}
+                <div style={{ fontSize: "11px", fontWeight: "600", color: isA ? "#f1f5f9" : "rgba(255,255,255,0.5)", lineHeight: "1.3" }}>{ev.title}</div>
+                {/* Expanded */}
+                {isA && (
+                  <div style={{ marginTop: "5px" }}>
+                    <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.4)", lineHeight: "1.5", margin: "0 0 4px" }}>{ev.desc}</p>
+                    {isShifted && (
+                      <div style={{ fontSize: "8px", color: "rgba(255,255,255,0.2)", fontFamily: "'DM Mono',monospace", marginBottom: "4px" }}>
+                        {TM_ICON[ev.timing]} {ev.date} {TM_SHORT[ev.timing]} 발표 → {ev.reflectDate} 반영
+                      </div>
+                    )}
+                    {ev.sources && ev.sources.length > 0 && (
+                      <div style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
+                        {ev.sources.map((src, si) => (
+                          <a key={si} href={src.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: "8px", padding: "2px 6px", borderRadius: "3px", background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Mono',monospace", textDecoration: "none" }}>
+                            {src.name} ↗
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           );
         })}
